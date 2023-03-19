@@ -1,5 +1,5 @@
 import Head from "next/head"
-import {client} from '../lib/client'
+import {client} from '../LIB/client'
 
 const about = () => {
   return (

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { urlfor } from '../lib/client'
+import { urlfor } from '../LIB/client'
 import Link from 'next/link'
 
 const Plant = ({ plant: {image, name, features, pricing_options, scientific_name, slug} }) => {
