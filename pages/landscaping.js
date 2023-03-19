@@ -38,7 +38,7 @@ const landscaping = () => {
                         Looking to plant a rain garden? Always wanted a raised bed?
                     </p>
                     <p style={{maxWidth: "750px"}}>
-                        I'd love to make it happen for you. You will probably end up with some free plants as a bonus. I can take over as much or as little of your garden as you like. Call or text +1 (734)417-9715 or email paulsplantstarts@gmail.com. 
+                        I'd love to make it happen for you. You will probably end up with some free plants as a bonus. I can take over as much or as little of your garden as you like. Call or text +1 (734) 417-9715 or email paulsplantstarts@gmail.com. 
                         I charge 50¢/mile driving and $20/hour labor
                     </p>
                 </div>
