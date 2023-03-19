@@ -9,13 +9,13 @@ import { FaArrowLeft } from 'react-icons/fa'
 const plantPage = ({ plant }) => {
   const {image, name, pricing_options, scientific_name, slug, features, description, details} = plant
   const {incQty, decQty, qty, onAdd, cartItems, setShowCart} = useStateContext();
-  const [option, setOption] = useState('Single')
+  const [option, setOption] = useState(pricing_options[0].option)
   const getPrice = (option) => {
     return pricing_options.find((opt) => opt.option == option).price
   }
   return (
     <div>
-      {console.log(plant)}
+      {console.log(pricing_options[0].option)}
         <Head>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         </Head>
@@ -199,9 +199,9 @@ const plantPage = ({ plant }) => {
                               className="select select-initialized"
                               onChange={(e) => setOption(e.target.value)}
                             >
-                              <option value="Single">Single</option>
-                              <option value="4-pack">Four Pack</option>
-                              <option value="8-pack">Eight Pack</option>
+                              {pricing_options.map((opt) =>
+                                <option value={opt["option"]}>{opt["option"]}</option>
+                              )}
                             </select>
                           </div>
                           </div>
