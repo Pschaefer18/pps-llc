@@ -2,7 +2,6 @@ import '../styles/globals.css'
 import { FooterBanner, Layout} from '../components'
 import { StateContext } from '../context/StateContext'
 import { Toaster } from 'react-hot-toast'
-import { client } from '../lib/client';
 
 function MyApp({ Component, pageProps}) {
   return (

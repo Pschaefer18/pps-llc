@@ -5,10 +5,7 @@ import { Cart } from "./"
 import { useStateContext } from "../context/StateContext"
 import { useState, useRef, useEffect } from "react"
 import { FaSearch } from "react-icons/fa"
-import {Users} from ".././users"
-import {client} from '../lib/client'
 import {Searchcard} from "./"
-import { Redirect } from "next"
 import { useRouter } from "next/router"
 
 const Navbar = ({plants}) => {

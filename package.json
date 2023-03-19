@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/core": "7.21.3",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@sanity/client": "5.3.0",
     "@sanity/image-url": "1.0.2",
