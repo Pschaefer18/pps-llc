@@ -24,6 +24,10 @@ const about = () => {
                 <p>
                     Most plants found on suburban properties today provide very little function other than a visual appeal. I encourage everyone with a yard to plant native species. They play an essential role in our local ecosystems and look beautiful as well. If you’re looking to attract birds and don’t want to spend a small fortune on birdseed each year, try some native perennials. Native plant species are the food of butterfly and moth larvae which are the food of baby birds. By providing the most basic level in the food web, you’ll be fostering an entire ecosystem in your own yard. Wildlife will surprise you with its ability to return when these plants are present.
                 </p>
+                <h4>Prairie Moon Nursery</h4>
+                <p>
+                  All of my purchased, native perennial seed comes from Prarie Moon Nursery, a well established seed company based in Minnesota that collects seeds across the midwest. You'll notice that my native plant images come from them. If you're interested in native seeds, check them out here: <a href="https://www.prairiemoon.com/">prairiemoon.com</a>
+                </p>
             </div>
         </body>
     </div>
