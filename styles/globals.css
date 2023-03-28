@@ -194,9 +194,6 @@ body{
   .plant-page-phone {
     display: none!important;
   }
-  .back-to-plants {
-    margin-top: 25px
-  }
   .transaction-buttons {
     width: 45%;
     position: absolute;
@@ -306,26 +303,6 @@ body{
     height: auto;
     border: none;
     border-radius: 1vw;
-  }
-  /* plant page for phone */
-  .plant-page-reg {
-  display: none!important;
-  }
-  .plant-page-phone {
-  display: block!important;
-  }
-  .plant-page-card {
-    width: 95%!important;
-    border-radius: 25px !important;
-    margin: 1rem auto !important;
-    max-width: 1000px !important;
-    padding: 5%!important;
-  }
-  .plant-page-table {
-    margin-bottom: 25px;
-  }
-  .back-to-plants {
-    margin-top: 25px
   }
 }
 
@@ -653,8 +630,70 @@ margin: 5px
   .homepage-body {
     width: 100%;
   }
+  body {
+    padding-top: 2.3em;
+  }
+  /* plant page for phone */
+  .plant-page-reg {
+    display: none!important;
+    }
+    .plant-page-phone {
+    display: block!important;
+    }
+    .plant-page-card {
+      width: 95%!important;
+      border-radius: 25px !important;
+      margin: 1rem auto !important;
+      max-width: 1000px !important;
+      padding: 5%!important;
+    }
+    .plant-page-table {
+      margin-bottom: 25px;
+    }
+    .back-to-plants {
+      margin-top: 25px
+    }
 }
-@media only screen and (max-width: 1000px) and (min-width: 750px) {
+@media only screen and (max-width: 992px) and (min-width: 750px) {
+  /* plant page */
+  .plant-page-reg {
+    display: block!important;
+  }
+  .plant-page-phone {
+    display: none!important;
+  }
+  .plant-page-card {
+    width: 75%;
+    border-radius: 25px !important;
+    margin: 5% auto !important;
+    margin-top: 2.5% !important;
+    max-width: 1000px !important;
+  }
+  .transaction-buttons {
+    width: 45%;
+    position: absolute;
+    bottom: 30px;
+  }
+  .flip-section-order-1 {
+    display: flex;
+  }
+  .flip-section-order-2 {
+    display: none;
+  }
+  .product-examples{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.5em;
+  }
+  .product-examples img{
+    width: 7vw;
+    height: auto;
+    border: none;
+    border-radius: 1vw;
+  }
+  .back-to-plants {
+    margin-left: 25px;
+  }
 
   .about-body img {
     width: 30%;

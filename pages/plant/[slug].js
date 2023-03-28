@@ -20,7 +20,7 @@ const plantPage = ({ plant }) => {
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         </Head>
         <body style ={{minHeight: '100vh'}}className="plantPage">
-          <Link href="/plants"><h2 style={{maxWidth: '275px'}}className="back-to-plants"><FaArrowLeft style={{margin: 'auto'}}/>Back To Plants</h2></Link>
+          <Link style={{textDecoration: 'none', color: 'black', maxWidth:'1000px'}}className="back-to-plants" href="/plants"><h2 style={{maxWidth: '275px', margin: '25px 10px'}}><FaArrowLeft style={{margin: 'auto'}}/>Back To Plants</h2></Link>
           <div
             className="plant-page-card card mb-3"
             style={{
@@ -285,28 +285,7 @@ const plantPage = ({ plant }) => {
   )
 }
 
-export const getStaticPaths = async () => {
-    const query = `*[_type == "plant"] {
-        slug {
-            current
-        }
-    }`;
-
-    const plants = await client.fetch(query);
-
-    const paths = plants.map((plant) => ({
-        params: {
-            slug: plant.slug.current
-        }
-    }));
-
-    return {
-        paths,
-        fallback: 'blocking'
-    }
-}
-
-export const getStaticProps = async ({ params: { slug }}) => {
+export const getServerSideProps = async ({ params: { slug }}) => {
     const query = `*[_type == "plant" && slug.current == '${slug}'][0]`
     const plantsQuery = '*[_type == "plant"]'
 

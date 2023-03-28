@@ -17,7 +17,7 @@ const landscaping = () => {
                 </h3>
                 <div className="can-cannot">
                     <div className="can-do">
-                        <h4>What I can do</h4>
+                        <h4>Capabilities</h4>
                         <ul>
                             <li>No-till gardens</li>
                             <li>Custom raised beds</li>
