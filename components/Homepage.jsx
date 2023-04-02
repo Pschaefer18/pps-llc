@@ -85,7 +85,7 @@ const Homepage = () => {
                 </tr>
                 <tr>
                   <td>Natives</td>
-                  <td>$55</td>
+                  <td>$54</td>
                   <td>$30</td>
                   <td>$50</td>
                 </tr>

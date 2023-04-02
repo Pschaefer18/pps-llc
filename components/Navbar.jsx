@@ -54,7 +54,7 @@ const Navbar = ({plants}) => {
   }
   return (
     <div className="navbar-component">
-      {console.log(plants)}
+      {/* {console.log(plants)} */}
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div style={{width: "100%"}}class="container-fluid">
         <img className="logo" src='https://i.imgur.com/GZFz9ge.png' alt="" />

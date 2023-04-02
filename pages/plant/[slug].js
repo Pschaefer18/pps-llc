@@ -168,7 +168,7 @@ const plantPage = ({ plant }) => {
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                           <div className="plant-qty-selection" style={{ margin: "auto"}}>
                         <button
-                          // onClick={decQty}
+                          onClick={decQty}
                           style={{
                             padding: "5px",
                             fontSize: "24px",
@@ -182,7 +182,7 @@ const plantPage = ({ plant }) => {
                           {qty}
                         </span>
                         <button
-                          // onClick={incQty}
+                          onClick={incQty}
                           style={{
                             padding: "5px",
                             fontSize: "24px",
@@ -229,13 +229,14 @@ const plantPage = ({ plant }) => {
                   <div className="transaction-buttons">
                     <div style={{ position: "relative", display: "flex", justifyContent: "space-evenly"}}>
                     <button
-                      // onClick={() => onAdd(plant, qty, option)}
+                      onClick={() => onAdd(plant, qty, option)}
                       style={{backgroundColor: "rgba(0,0,255,0.25)",position: "relative", padding: "2.5% 7.5%"}}
                       type="button"
                       className="btn btn-primary"
                     >
                       add to cart
                     </button>
+                    <Link href="/checkout">
                     <button
                       style={{backgroundColor: "rgba(0,0,255,0.25)", position: "relative", padding: "2.5% 7.5%" }}
                       type="button"
@@ -243,6 +244,8 @@ const plantPage = ({ plant }) => {
                     >
                       Order Now
                     </button>
+                    </Link>
+  
                     </div>
                   </div>
                   <table className="plant-page-phone" id = "details">

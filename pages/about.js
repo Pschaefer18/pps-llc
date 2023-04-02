@@ -26,7 +26,7 @@ const about = () => {
                 </p>
                 <h4>Prairie Moon Nursery</h4>
                 <p>
-                  All of my purchased, native perennial seed comes from Prarie Moon Nursery, a well established seed company based in Minnesota that collects seeds across the midwest. You'll notice that my native plant images come from them. If you're interested in native seeds, check them out here: <a href="https://www.prairiemoon.com/">prairiemoon.com</a>
+                  All of my purchased, native perennial seed comes from Prarie Moon Nursery, a well established seed company based in Minnesota that collects seeds across the Midwest. You'll notice that I've used their images to represent my plants. If you're interested in native seeds, check them out here: <a href="https://www.prairiemoon.com/">prairiemoon.com</a>
                 </p>
             </div>
         </body>
