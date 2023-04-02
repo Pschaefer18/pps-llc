@@ -5,9 +5,10 @@ const calculateDistance = async (destination) => {
     const origin = '4375 Eastgate Dr, Ann Arbor, MI'
     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`
 
-    }
     axios.get(url,)
     .then(response => {
         console.log(response.data)
     })
+}
+
 export default calculateDistance
