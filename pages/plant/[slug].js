@@ -1,21 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { client, urlfor } from '../../LIB/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useStateContext } from '../../context/StateContext'
 import { FaArrowLeft } from 'react-icons/fa'
+import { db } from '../api/inventory'
+import { ref, onValue, get, child } from "firebase/database"
+import { reset } from 'canvas-confetti'
 
-const plantPage = ({ plant }) => {
+const plantPage = ({ plant, inventory }) => {
   const {image, name, pricing_options, scientific_name, slug, features, description, details} = plant
-  const {incQty, decQty, qty, onAdd, cartItems, setShowCart} = useStateContext();
+  const {incQty, decQty, qty, onAdd, resetQty, cartItems, setShowCart} = useStateContext();
   const [option, setOption] = useState(pricing_options[0].option)
+
+  useEffect(() => {
+    resetQty()
+  }, [])
   const getPrice = (option) => {
     return pricing_options.find((opt) => opt.option == option).price
+  }
+  const handleOptionClick = (opt) => {
+    if (opt !== option) {
+      setOption(opt)
+    }
   }
   return (
     <div>
       {console.log(pricing_options[0].option)}
+      {console.log(inventory[`${option}s`])}
         <Head>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         </Head>
@@ -31,7 +44,7 @@ const plantPage = ({ plant }) => {
             }}
           >
             <div className="row g-0">
-            <div className="plant-page-phone"style={{ width: "fit-content" }}>
+            <div className="titles plant-page-phone"style={{ width: "fit-content" }}>
                     <h2 className="card-title">{name}</h2>
                     <h6
                       className="text-muted"
@@ -132,7 +145,7 @@ const plantPage = ({ plant }) => {
                     </h6>
                   </div>
                   <br />
-                  <div className='plant-page-reg features'>
+                  <div className=' plant-page-reg features'>
                       {features && features.map((img) => {
                         return (
                             <img src={urlfor(img)} width="45px" height="45px"/>
@@ -147,100 +160,102 @@ const plantPage = ({ plant }) => {
                       </small>
                     </Link> */}
                   </p>
-                  <table className="plant-page-table">
-                    <tr>
-                      <td style={{paddingLeft: "0px"}}>
-                        <h6>
+                  <div class="container overflow-hidden text-center" style={{marginBottom: "20%"}}>
+                    <div class="row">
+                      <div class="col-3">
+                        <h6 >
                           Availability:
                         </h6>
-                      </td>
-                        <td>
-                          Pre-ordering available April 1st
-                        </td>
-                    </tr>
-                    <tr>
-                      <td style={{paddingLeft: "0px"}}>
-                        <h6>
+                      </div>
+                      <div class="col-8">
+                        <h6 className = "text-success" >Available for pre-order
+                        </h6>
+                      </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-3">
+                          <h6>
+                            Price:
+                          </h6>
+                        </div>
+                        <div className="col-8">
+                        <h6 style={{textAlign: 'left', margin: 'auto'}}>
+                          ${getPrice(option)}.00
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-3">
+                          <h6>
+                            Options:
+                          </h6>
+                        </div>
+                        <div className="select-container col-9">
+                              {pricing_options.map((opt) =>
+                              option == opt["option"] ? (
+                                <div className="option" style={{backgroundColor: '#2c61fc', color: 'white'}} onClick={() => handleOptionClick(opt["option"])}>{opt["option"]}</div>
+                              ) : (
+                                <div className="option" onClick={() => handleOptionClick(opt["option"])}>{opt["option"]}</div>
+                              )
+                              )}
+                        </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-3">
+                        <h6 >
                           Quantity:
                         </h6>
-                      </td>
-                      <td style={{paddingLeft: "0px"}}>
-                        <div style={{display: 'flex', flexDirection: 'row'}}>
-                          <div className="plant-qty-selection" style={{ margin: "auto"}}>
-                        <button
+                      </div>
+                      <div class="col-3">
+                        <div className="plant-qty-selection" style={{ margin: "auto"}}>
+                          <button
                           onClick={decQty}
                           style={{
-                            padding: "5px",
+                            padding: "0px 7.5px 5px 7.5px",
                             fontSize: "24px",
                             lineHeight: "0px",
+                            verticalAlign: "middle",
                           }}
                           className="btn btn-primary"
                         >
                           -
-                        </button>
-                        <span>
+                          </button>
+                          <span>
                           {qty}
-                        </span>
-                        <button
+                          </span>
+                          <button
                           onClick={incQty}
                           style={{
-                            padding: "5px",
+                            padding: "0px 6px 5px 6px",
                             fontSize: "24px",
                             lineHeight: "0px",
+                            outline: "none"
                           }}
                           className="btn btn-primary"
                         >
                           +
-                        </button>
-                          </div>
-                          <div style={{ width: "fit-content" }}>
-                          <div id="select-wrapper-841361" className="select-wrapper">
-                            <select
-                              className="select select-initialized"
-                              onChange={(e) => setOption(e.target.value)}
-                            >
-                              {pricing_options.map((opt) =>
-                                <option value={opt["option"]}>{opt["option"]}</option>
-                              )}
-                            </select>
-                          </div>
-                          </div>
+                          </button>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style= {{paddingTop: "10px", paddingLeft: "0px"}}>
-                        <h6>
-                          Price:
-                        </h6>
-                      </td>
-                      <td style={{paddingTop: "10px"}}>
-                        <h6>
-                          ${getPrice(option)}.00
-                        </h6>
-                      </td>
-                    </tr>
-                    <div style={{ display: "flex"}}>
-                    
-                    
+                      </div>
+                      <div class="col-4">
+                      {<span style={{marginLeft: "10px", color: "green"}}>{inventory[`${option}s`]} in stock </span>}
+                      </div>
                     </div>
-                  </table>
+                  </div>
                   
                   <div className="transaction-buttons">
                     <div style={{ position: "relative", display: "flex", justifyContent: "space-evenly"}}>
                     <button
                       onClick={() => onAdd(plant, qty, option)}
-                      style={{backgroundColor: "rgba(0,0,255,0.25)",position: "relative", padding: "2.5% 7.5%"}}
                       type="button"
-                      className="btn btn-primary"
+                      className="transaction-button btn btn-primary"
                     >
                       add to cart
                     </button>
                     <Link href="/checkout">
                     <button
-                      style={{backgroundColor: "rgba(0,0,255,0.25)", position: "relative", padding: "2.5% 7.5%" }}
                       type="button"
-                      className="btn btn-primary"
+                      className="transaction-button btn btn-primary"
                     >
                       Order Now
                     </button>
@@ -294,9 +309,12 @@ export const getServerSideProps = async ({ params: { slug }}) => {
 
     const plants = await client.fetch(plantsQuery);
     const plant = await client.fetch(query);
+    const inventoryRef = ref(db, `/${plant.name}`)
+    const inventorySnapshot = await get(inventoryRef, '/');
+    const inventory = inventorySnapshot.val();
 
     return {
-        props: { plant, plants }
+        props: { plant, plants, inventory }
     }
 }
 export default plantPage
