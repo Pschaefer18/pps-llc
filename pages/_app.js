@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import { FooterBanner, Layout} from '../components'
+import { Layout} from '../components'
 import { StateContext } from '../context/StateContext'
 import { Toaster } from 'react-hot-toast'
 
@@ -10,7 +10,6 @@ function MyApp({ Component, pageProps}) {
       <Toaster />
       <Component {...pageProps} />
     </Layout>
-    <FooterBanner />
   </StateContext>
   )
 }

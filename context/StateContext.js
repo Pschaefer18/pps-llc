@@ -10,29 +10,39 @@ export const StateContext = ({ children }) => {
     const [totalQuantities, setTotalQuantities] = useState(0);
     const [qty, setQty] = useState(1);
 
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(cart)
+        var price = 0
+        cart.map((item) => price += item.price * item.quantity)
+        setTotalPrice(price)
+      }, []);
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cartItems))
+      }, [cartItems]);
+
     const onAdd = (product, quantity, option) => {
         const checkProductInCart = cartItems.find((item) => item._id === product._id && item.option == option);
         const price = product.pricing_options.find((opt) => opt.option == option).price
         setTotalPrice((prevTotalPrice) => prevTotalPrice + price * quantity)
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity)
-
+        var updatedCartItems = []
         if(checkProductInCart) {
 
-            const updatedCartItems = cartItems.map((cartProduct => {
+            updatedCartItems = cartItems.map((cartProduct => {
                 if(cartProduct._id === product._id) return {
                     ...cartProduct,
                     quantity: cartProduct.quantity + quantity,
                 }
             }))
-
-            setCartItems(updatedCartItems);
-            console.log(updatedCartItems)
         } else {
             product.quantity = quantity;
             product.price = price
             product.option = option
-            setCartItems([...cartItems, { ...product }]);
+            updatedCartItems = [...cartItems, { ...product }];
         }
+        setCartItems(updatedCartItems);
         toast.success(`${qty} ${product.name} added to the cart.`);
     }
     const onRemove = (index, value) => {
@@ -51,6 +61,9 @@ export const StateContext = ({ children }) => {
   
             return prevQty - 1;
         })
+    }
+    const resetQty = () => {
+        setQty(1)
     }
     const toggleCartItemQty = (id, value, option) => {
             const foundProduct = cartItems.find((item) => item._id == id && item.option == option)
@@ -82,7 +95,8 @@ export const StateContext = ({ children }) => {
                 onAdd,
                 onRemove,
                 setShowCart,
-                toggleCartItemQty
+                toggleCartItemQty,
+                resetQty
             }}
         >
             {children}

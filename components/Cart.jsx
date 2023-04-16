@@ -5,27 +5,21 @@ import Head from "next/head";
 import toast from 'react-hot-toast'
 import { urlfor } from "../LIB/client"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingBasket, faX } from "@fortawesome/free-solid-svg-icons";
 import getStripe from "../LIB/getStripe";
 const Cart = () => {
   const { totalPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty } = useStateContext();
   console.log(cartItems)
-  const handleStripe = async () => {
-    const stripe = await getStripe();
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(cartItems),
-    });
-    if(response.statusCode === 500) return;
-    const data = await response.json();
-    toast.loading('Redirecting...');
-
-    stripe.redirectToCheckout({ sessionId: data.id })
-  }
   const cartRef = useRef()
+
+  const handleCartClose = () => {
+    setShowCart(false)
+    cartItems.map((item) => {
+      if(item.quantity == 0) {
+        onRemove(cartItems.indexOf(item), 0)
+      }
+    })
+  }
   return (
     <>
         <Head>
@@ -33,38 +27,31 @@ const Cart = () => {
         </Head>
                     <div className="cart-wrapper" ref={cartRef}>
                         <div className="cart-container">
-                          <button 
-                          type="button"
-                          className="cart-heading"
-                          onClick={() => {
-                            setShowCart(false)
-                            cartItems.map((item) => {
-                              if(item.quantity == 0) {
-                                onRemove(cartItems.indexOf(item), 0)
-                              }
-                            })
-                          }}
-                          >
-                          Close
-                          </button>
-                          <span className="heading">Your Cart</span>
-                          <span className="cart-num-items">{totalQuantities}</span>
-                          {(cartItems.length < 1) ? (
-                            <div className="empty-cart">
-                              <h3>Your Basket is empty</h3>
-                              <FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgb(105, 72, 0)" outline = "2px solid black"/>
+                            <div className="cart-heading">
+                              <button 
+                                type="button"
+                                className="cart-close"
+                                onClick={handleCartClose}
+                                >
+                                <FontAwesomeIcon icon = {faX} color = "black" outline = "2px solid black"/>
+                              </button>
+                            <div className="basket-icon">
+                              <FontAwesomeIcon icon = {faShoppingBasket} color = "#000" outline = "2px solid black"/>
                             </div>
-                          ) : (
+                            {(cartItems.length < 1) && (
+                              <h5>Your Basket is empty</h5>
+                            )}
+                            </div>
                             <div className="product-container">
                               {cartItems.map((item) => {
                                 return (
-                                <div class="card mb-3" style={{maxWidth: "540px"}}>
-                                <div class="row g-0">
+                                <div class="card mb-3" style={{maxWidth: "540px", overflowX: "hidden"}}>
+                                <div class="row flex-nowrap">
                                   {console.log(item)}
-                                  <div class="col-md-4">
+                                  <div class="col-5">
                                     <img src={urlfor(item?.image[0])} class="img-fluid rounded-start" alt/>
                                   </div>
-                                  <div class="col-md-8">
+                                  <div class="col-8">
                                     <div class="card-body">
                                       <h5 class="card-title">{item.name}</h5>
                                       <div className="cart-content">
@@ -87,14 +74,9 @@ const Cart = () => {
                                               <td>${item.price * item.quantity}</td>
                                             </tr>
                                             <tr>
-                                              <td className="qty-selector"><button style={{marginRight: "7.5px"}} onClick={() => toggleCartItemQty(item._id, "dec", item.option)}>-</button>{item.quantity}<button style={{marginLeft: "7.5px"}} onClick={() => toggleCartItemQty(item._id, 'inc', item.option)}>+</button></td>
+                                              <td className="qty-selector"><button style={{color: "white", marginRight: "7.5px"}} onClick={() => toggleCartItemQty(item._id, "dec", item.option)}>-</button>{item.quantity}<button style={{color: "white", marginLeft: "7.5px"}} onClick={() => toggleCartItemQty(item._id, 'inc', item.option)}>+</button></td>
                                             </tr>
                                           </table>
-                                        </div>
-                                        <div className="cart-plant-features">
-                                          {item.features?.map((img) => {
-                                            return <img src={urlfor(img)} width="40" alt="" style={{padding: "1px"}}/>
-                                          })}
                                         </div>
                                         <span className="cart-remove" onClick={() => onRemove(cartItems.indexOf(item), item.price * item.quantity)}>Remove Item</span>
                                       </div>
@@ -105,39 +87,24 @@ const Cart = () => {
                               )
                               })}
                             </div>
-                          )}
                           <div className="order-summary">
-                              <h2>Total: {totalPrice}</h2>
-                          </div>
-                          <div className="btn-container">
-                            <button type="button" className="btn" onClick={handleStripe}>
-                              Pay with Stripe
-                            </button>
+                              <div className="subtotal">
+                                <h2>Subtotal</h2>
+                                <h3 style={{padding: '0', paddingRight: '20px'}}>${totalPrice}.00</h3>
+                              </div>
+                              <p style={{textAlign: "center", padding: "10px"}}>
+                                Pick-up/delivery dates are selected in checkout
+                              </p>
+                              <div className="btn-container">
                             <Link href="/checkout">
-                              <button type="button" className="btn">
-                                Checkout
-                              </button>
+                            <div class="d-grid gap-2 checkout-btn-container">
+                              <button onClick={handleCartClose}class="btn btn-primary" type="button">checkout</button>
+                            </div>
                             </Link>
+                          </div>
                           </div>
                         </div>
                     </div>
-                    {/* {cartItems.map((item) => {
-                    <div class="card mb-3" style={{maxWidth: "540px"}}>
-                        <div class="row g-0">
-                          <div class="col-md-4">
-                            <img src={urlfor(item.image[0])} class="img-fluid rounded-start" alt="..."/>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    })} */}
-                    
     </>
   )
 }

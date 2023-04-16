@@ -58,6 +58,11 @@ export default {
             type: 'array',
             of: [{type: 'image'}],
 
+        },
+        {
+            name: 'id',
+            title: 'ID',
+            type: 'string',
         }
     ]
 }

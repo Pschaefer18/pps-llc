@@ -19,7 +19,7 @@ const plants = ({plants, bannerData}) => {
             PLANTS
           </h2>
             <div id = "plants-grid" className="plants-grid row row-cols-1 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 g-4">
-                {query.query ? (<><h3 style={{width: '100%'}}>`Your search for "{query.query}" returned {returnedPlants.length > 0 ? (returnedPlants.length) : ("no")} results`</h3> {returnedPlants.map((plant) => <Plant plant = {plant}/>)}</>) : (plants?.map((plant) => <Plant plant = {plant}/>))}
+                {query.query ? (<><h3>`Your search for "{query.query}" returned {returnedPlants.length > 0 ? (returnedPlants.length) : ("no")} results`</h3> {returnedPlants.map((plant) => <Plant plant = {plant}/>)}</>) : (plants?.map((plant) => <Plant plant = {plant}/>))}
             </div>
         </div>
     </div>

@@ -5,27 +5,25 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
+      // Get user address information from database or other sources
+      const userAddress = {
+        line1: '123 Main St',
+        city: 'San Francisco',
+        state: 'CA',
+        postal_code: '94111',
+        country: 'US',
+      };
+
       const params = {
-        submit_type: 'pay',
-        mode: 'payment',
-        payment_method_types: ['card'],
-        billing_address_collection: 'auto',
-        shipping_address_collection: {
-            "allowed_countries": ["US"]
-          },
-        shipping_options: [
-          { shipping_rate: 'shr_1Ms7E6A8zxkf4hwDOZCvVw5t' },
-          { shipping_rate: 'shr_1Ms7GhA8zxkf4hwDgqVoH6WH'}
-        ],
-        line_items: req.body.map((item) => {
+        line_items: req.body.cartItems.map((item) => {
           const img = item.image[0].asset._ref;
           const newImage = img.replace('image-', 'https://cdn.sanity.io/images/vfxfwnaw/production/').replace('-webp', '.webp');
-
           return {
             price_data: { 
               currency: 'usd',
               product_data: { 
                 name: item.name,
+                id: item.id,
                 images: [newImage],
               },
               unit_amount: item.price * 100,
@@ -37,8 +35,12 @@ export default async function handler(req, res) {
             quantity: item.quantity
           }
         }),
+        submit_type: 'pay',
+        mode: 'payment',
+        payment_method_types: ['card'],
+        billing_address_collection: 'auto',
         success_url: `${req.headers.origin}/success`,
-        cancel_url: `${req.headers.origin}/canceled`,
+        cancel_url: `${req.headers.origin}/checkout`,
       }
 
       // Create Checkout Sessions from body params.
