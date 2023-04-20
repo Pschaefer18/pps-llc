@@ -1033,7 +1033,8 @@ color: rgba(0,0,0,1)
     display: none;
   }
   .cart-close {
-    margin-right: 20px;
+    margin-right: 50px;
+    padding-right: 15px;
   }
   .qty-selector button {
     max-width: 20px;
