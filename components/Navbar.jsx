@@ -31,7 +31,10 @@ const Navbar = ({plants}) => {
     setIsTypingA(true)
     setIsTypingB(true)
   }
-
+  useEffect(() => {
+    showCart ? document.body.style.setProperty("overflow", "hidden")
+    : document.body.style.setProperty("overflow", "visible")
+  }, [showCart])
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (divRef.current && !divRef.current.contains(event.target) && !searchRef.current.contains(event.target)) {

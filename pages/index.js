@@ -4,9 +4,9 @@ import { client } from '../LIB/client';
 import Head from 'next/head';
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
+import {useStateContext} from '../context/StateContext'
 
 const stripePromise = loadStripe('pk_live_51MTYJZA8zxkf4hwD5JitH9DH3I4x0UxFyKUPF0s1XPPJSoB31s9g75baDJaVQ2RpxWbDBl94CVY6esSDG3moVLew008CrZ93X2')
-
 const Home = ({ plants, bannerData}) => {
   const options = {
     // passing the client secret obtained in step 3
