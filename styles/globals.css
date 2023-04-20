@@ -651,6 +651,11 @@ margin: 5px
   padding-bottom: 0px;
   position: relative;
 }
+@media only screen and (max-width: 450px) {
+  .subtotal p {
+    display: none;
+  }
+}
 
 /* About Page */
 
