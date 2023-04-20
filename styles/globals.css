@@ -718,8 +718,8 @@ margin: 5px
     }
     .transaction-buttons {
       width: 90%;
-      position: absolute;
-      bottom: clamp(175px, 35vw, 200px)
+      position: relative;
+      margin-bottom: 15px;
     }
     .transaction-button {
       background-color: #2c61fc;
