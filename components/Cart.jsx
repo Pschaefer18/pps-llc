@@ -56,27 +56,21 @@ const Cart = () => {
                                       <h5 class="card-title">{item.name}</h5>
                                       <div className="cart-content">
                                         <div className = "cart-specs">
-                                          <table>
-                                            <colgroup>
-                                              <col style={{width: "80px"}}></col>
-                                              <col></col>
-                                            </colgroup>
-                                            <tr>
-                                              <td style={{fontWeight: "600"}}>Type:</td>
-                                              <td>{item.option}</td>
-                                            </tr>
-                                            <tr>
-                                              <td style={{fontWeight: "600"}}>Price ea:</td>
-                                              <td>${item.price}</td>
-                                            </tr>
-                                            <tr>
-                                              <td style={{fontWeight: "600"}}>Subtotal:</td>
-                                              <td>${item.price * item.quantity}</td>
-                                            </tr>
-                                            <tr>
-                                              <td className="qty-selector"><button style={{color: "white", marginRight: "7.5px"}} onClick={() => toggleCartItemQty(item._id, "dec", item.option)}>-</button>{item.quantity}<button style={{color: "white", marginLeft: "7.5px"}} onClick={() => toggleCartItemQty(item._id, 'inc', item.option)}>+</button></td>
-                                            </tr>
-                                          </table>
+                                            <div className="row g-0">
+                                              <div className="col-4" style={{fontWeight: "600"}}>Type:</div>
+                                              <div className="col-8">{item.option}</div>
+                                            </div>
+                                            <div className="row g-0">
+                                              <div className="col-4" style={{fontWeight: "600"}}>Price ea:</div>
+                                              <div className="col-8">${item.price}</div>
+                                            </div>
+                                            <div className="row g-0">
+                                              <div className="col-4" style={{fontWeight: "600"}}>Subtotal:</div>
+                                              <div className="col-8">${item.price * item.quantity}</div>
+                                            </div>
+                                            <div className="row g-0">
+                                              <div className="qty-selector"><button style={{color: "white", marginRight: "7.5px"}} onClick={() => toggleCartItemQty(item._id, "dec", item.option)}>-</button>{item.quantity}<button style={{color: "white", marginLeft: "7.5px"}} onClick={() => toggleCartItemQty(item._id, 'inc', item.option)}>+</button></div>
+                                            </div>
                                         </div>
                                         <span className="cart-remove" onClick={() => onRemove(cartItems.indexOf(item), item.price * item.quantity)}>Remove Item</span>
                                       </div>
