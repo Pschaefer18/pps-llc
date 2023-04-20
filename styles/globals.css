@@ -587,7 +587,6 @@ margin: 5px
   padding: 0;
   margin-top: 7.5px;
   width: fit-content;
-  max-width: 68px;
 }
 .qty-selector button {
   border: none;
@@ -1035,5 +1034,8 @@ color: rgba(0,0,0,1)
   }
   .cart-close {
     margin-right: 20px;
+  }
+  .qty-selector button {
+    max-width: 25px;
   }
 }
