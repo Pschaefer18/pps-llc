@@ -1036,6 +1036,6 @@ color: rgba(0,0,0,1)
     margin-right: 20px;
   }
   .qty-selector button {
-    max-width: 25px;
+    max-width: 20px;
   }
 }
