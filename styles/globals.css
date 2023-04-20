@@ -970,6 +970,7 @@ color: rgba(0,0,0,1)
   height: 55px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.501);
   margin-left: 10px;
+  width: 100%;
 }
 .basket-icon {
   width: 50px;
