@@ -970,7 +970,6 @@ color: rgba(0,0,0,1)
   height: 55px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.501);
   margin-left: 10px;
-  width: 100%;
 }
 .basket-icon {
   width: 50px;
@@ -1034,8 +1033,8 @@ color: rgba(0,0,0,1)
     display: none;
   }
   .cart-close {
-    margin-right: 50px;
-    padding-right: 15px;
+    margin-right: 20px;
+    width: fit-content;
   }
   .qty-selector button {
     max-width: 20px;
