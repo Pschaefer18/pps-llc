@@ -33,7 +33,7 @@ const Cart = () => {
                                 className="cart-close"
                                 onClick={handleCartClose}
                                 >
-                                <FontAwesomeIcon icon = {faX} color = "black" outline = "2px solid black"/>
+                                <FontAwesomeIcon style={{width: '25px'}} icon = {faX} color = "black" outline = "2px solid black"/>
                               </button>
                             <div className="basket-icon">
                               <FontAwesomeIcon icon = {faShoppingBasket} color = "#000" outline = "2px solid black"/>
