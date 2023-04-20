@@ -6,35 +6,42 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       // Get user address information from database or other sources
-      const userAddress = {
-        line1: '123 Main St',
-        city: 'San Francisco',
-        state: 'CA',
-        postal_code: '94111',
-        country: 'US',
-      };
-
+      var lineItems = req.body.cartItems.map((item) => {
+        const img = item.image[0].asset._ref;
+        const newImage = img.replace('image-', 'https://cdn.sanity.io/images/vfxfwnaw/production/').replace('-webp', '.webp');
+        return {
+          price_data: { 
+            currency: 'usd',
+            product_data: { 
+              name: `${item.name} (${item.option})`,
+              images: [newImage],
+            },
+            unit_amount: item.price * 100,
+          },
+          adjustable_quantity: {
+            enabled:true,
+            minimum: 1,
+          },
+          quantity: item.quantity
+        }
+      })
+      if (req.body.delivery) {
+        lineItems.push({
+        price_data: { 
+          currency: 'usd',
+          product_data: { 
+            name: `Delivery Charge`
+          },
+          unit_amount: req.body.delivery * 100,
+        },
+        quantity: 1
+      })
+      }
       const params = {
-        line_items: req.body.cartItems.map((item) => {
-          const img = item.image[0].asset._ref;
-          const newImage = img.replace('image-', 'https://cdn.sanity.io/images/vfxfwnaw/production/').replace('-webp', '.webp');
-          return {
-            price_data: { 
-              currency: 'usd',
-              product_data: { 
-                name: item.name,
-                id: item.id,
-                images: [newImage],
-              },
-              unit_amount: item.price * 100,
-            },
-            adjustable_quantity: {
-              enabled:true,
-              minimum: 1,
-            },
-            quantity: item.quantity
-          }
-        }),
+        line_items: lineItems,
+        automatic_tax: {
+          enabled: true,
+        },
         submit_type: 'pay',
         mode: 'payment',
         payment_method_types: ['card'],

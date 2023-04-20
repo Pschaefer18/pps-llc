@@ -9,18 +9,24 @@ export const StateContext = ({ children }) => {
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalQuantities, setTotalQuantities] = useState(0);
     const [qty, setQty] = useState(1);
+    const [customerInfo, setCustomerInfo] = useState({})
 
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartItems(cart)
+        const localCustomerInfo = JSON.parse(localStorage.getItem('customerInfo')) || [];
+        setCustomerInfo(localCustomerInfo)
         var price = 0
-        cart.map((item) => price += item.price * item.quantity)
+        cart && cart.map((item) => price += item.price * item.quantity)
         setTotalPrice(price)
       }, []);
 
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartItems))
       }, [cartItems]);
+    useEffect(() => {
+      localStorage.setItem('customerInfo', JSON.stringify(customerInfo))
+    }, [customerInfo]);
 
     const onAdd = (product, quantity, option) => {
         const checkProductInCart = cartItems.find((item) => item._id === product._id && item.option == option);
@@ -81,6 +87,9 @@ export const StateContext = ({ children }) => {
             }
             
     }
+    const addCustomerInfo = (info) => {
+        setCustomerInfo(info)
+    }
 
     return (
         <Context.Provider
@@ -90,13 +99,16 @@ export const StateContext = ({ children }) => {
                 totalPrice,
                 totalQuantities,
                 qty,
+                customerInfo,
                 incQty,
                 decQty,
                 onAdd,
                 onRemove,
                 setShowCart,
                 toggleCartItemQty,
-                resetQty
+                resetQty,
+                addCustomerInfo,
+                setCartItems
             }}
         >
             {children}

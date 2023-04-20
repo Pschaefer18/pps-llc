@@ -194,9 +194,6 @@ body{
 }
 @media only screen and (min-width: 992px) {
   /* plant page */
-  .plant-page-reg {
-    display: block!important;
-  }
   .plant-page-phone {
     display: none!important;
   }
@@ -246,6 +243,8 @@ body{
   }
 }
 @media only screen and (max-width: 992px) {
+  /* Plantpage */
+  
   /* Homepage */
   .bulk-discounts {
     font-size: 3.5vw;
@@ -323,6 +322,9 @@ body{
 
 td {
   vertical-align: bottom;
+}
+#details td {
+  vertical-align: top;
 }
 .plants-grid {
   margin-top: 5%;
@@ -434,7 +436,7 @@ td {
   -moz-appearance: none;
   background-color: transparent;
   border: none;
-  font-size: 16px;
+  font-size: clamp(12px,1.25vw,16px);
   font-weight: bold;
   color: #006eff;
   cursor: pointer;
@@ -521,7 +523,7 @@ margin: 5px
 .card-body button {
   background-color: #2c61fc;
 }
-.card-body button:hover {
+.card-body .transaction-button:hover {
   cursor: pointer;
   background-color: #2b00ff;
 }
@@ -553,8 +555,16 @@ margin: 5px
   padding: 10px 0 0  10px;
 }
 .fa-basket-shopping {
+  width: 50px;
   display: block;
   margin: auto;
+}
+.empty-cart .fa-basket-shopping {
+  display: block;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 10%;
+  width: 50%;
 }
 .product-container{
   margin-top: 15px;
@@ -704,7 +714,18 @@ margin: 5px
     display: none!important;
     }
     .plant-page-phone {
-    display: block!important;
+    /* display: block!important; */
+    }
+    .transaction-buttons {
+      width: 90%;
+      position: absolute;
+      bottom: clamp(175px, 35vw, 200px)
+    }
+    .transaction-button {
+      background-color: #2c61fc;
+      position: relative;
+      padding: 2.5% 7.5%;
+      white-space: nowrap;
     }
     .titles {
       text-align: center;
@@ -726,9 +747,6 @@ margin: 5px
 }
 @media only screen and (max-width: 992px) and (min-width: 750px) {
   /* plant page */
-  .plant-page-reg {
-    display: block!important;
-  }
   .plant-page-phone {
     display: none!important;
   }
@@ -737,10 +755,10 @@ margin: 5px
     border-radius: 25px !important;
     margin: 5% auto !important;
     margin-top: 2.5% !important;
-    max-width: 1000px !important;
+    max-width: 500px !important;
   }
   .transaction-buttons {
-    width: 45%;
+    width: 90%;
     position: absolute;
     bottom: 30px;
   }
@@ -748,6 +766,7 @@ margin: 5px
     background-color: #2c61fc;
     position: relative;
     padding: 2.5% 7.5% ;
+    white-space: nowrap;
   }
   .flip-section-order-1 {
     display: flex;
@@ -993,4 +1012,17 @@ color: rgba(0,0,0,1)
     width: 100%;
     max-width: 600px;
   }
+}
+/* success page */
+.success-body {
+  min-height: calc(100vh - var(--footer-height))
+}
+.success-page {
+  width: 60%;
+  margin: 50px auto;
+  padding: 50px 10vw;
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+  min-height: 60vh;
 }

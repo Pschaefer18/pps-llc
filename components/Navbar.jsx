@@ -86,7 +86,7 @@ const Navbar = ({plants}) => {
         {/* <div className="nav-link account"><Link href="">Create Account</Link> <br /><Link href="">Login</Link></div> */}
         {showCart && <Cart />}
         <div style = {{display: 'flex'}}>
-        <div className="shopping-basket nav-link" style= {{width: "65px"}}><span onClick={() => {setShowCart(true)}}><FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgb(105, 72, 0)" outline = "2px solid black"/></span></div>
+        <div className="shopping-basket nav-link" style= {{width: "fit-content", padding: "0px", margin: "20px"}}><span onClick={() => {setShowCart(true)}}><FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgb(105, 72, 0)" outline = "2px solid black"/></span></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

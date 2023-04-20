@@ -9,15 +9,23 @@ import { urlfor } from "../LIB/client";
 import toast from "react-hot-toast"
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import { DateTime } from "luxon";
+
 
 const CheckoutPage = () => {
-  const { totalPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty } = useStateContext();    const google_maps_api = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+  const { totalPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty, addCustomerInfo } = useStateContext();
+  const google_maps_api = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     const [showAddressInfo, setShowAddressInfo] = useState(true);
     const [deliveryDistance, setDeliveryDistance] = useState(0);
     const [shippingCost, setShippingCost] = useState(0)
     const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null)
     const [selectedPickUpDate, setSelectedPickUpDate] = useState(null)
     const [stripeAddress, setStripeAddress] = useState({})
+    const [name, setName] = useState("")
+    const [phone, setPhone] = useState(null)
+    const tomorrow = new Date(DateTime.now().ts + 86400000)
     const filterDay = (day) => {
         return (date) => {
             return date.getDay() === day;
@@ -51,6 +59,12 @@ const CheckoutPage = () => {
         console.log(event.value)
       }
     }
+    const handlePhone = (number) => {
+      setPhone(number)
+    }
+    const handleName = (e) => {
+      setName(e.target.value)
+    }
     const handleStripe = async () => {
         const stripe = await getStripe();
         const response = await fetch('/api/stripe', {
@@ -60,7 +74,8 @@ const CheckoutPage = () => {
           },
           body: JSON.stringify({
             cartItems: cartItems,
-            address: stripeAddress
+            address: stripeAddress,
+            delivery: deliveryDistance ? Math.round((deliveryDistance / 1609)) : null
         }),
         });
         if(response.statusCode === 500) return;
@@ -68,6 +83,14 @@ const CheckoutPage = () => {
         const data = await response.json()
 
         toast.loading('Redirecting...');
+        addCustomerInfo({
+        name: (showAddressInfo ? stripeAddress.name : name),
+        phoneNumber: phone,
+        pickupDate: selectedPickUpDate,
+        deliveryDate: selectedDeliveryDate,
+        deliveryAddress: stripeAddress,
+        delivery: showAddressInfo
+        })
     
         stripe.redirectToCheckout({ sessionId: data.id })
       }
@@ -83,7 +106,7 @@ const CheckoutPage = () => {
             {(cartItems.length < 1) ? (
                               <div className="empty-cart">
                                 <h3>Your Basket is empty</h3>
-                                <FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgb(105, 72, 0)" outline = "2px solid black"/>
+                                <FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgba(0, 0, 0, 0.5)" outline = "2px solid black"/>
                               </div>
                             ) : (
                               <div className="checkout-product-container">
@@ -176,21 +199,35 @@ const CheckoutPage = () => {
                 />
               </Elements> </>}
               {deliveryDistance ? <h6>
-              Your delivery charge is ${Math.round((deliveryDistance / 1609))}
+              Your delivery charge is ${Math.round((deliveryDistance / 1609))} based on your location
             </h6> : null}
             {showAddressInfo ? 
             <>
             <h5>
               Delivery Date
             </h5> 
-            <DatePicker filterDate={filterDay(5)} selected={selectedDeliveryDate} onChange={handleDeliveryDateChange} />
+            <DatePicker filterDate={filterDay(5)} selected={selectedDeliveryDate} onChange={handleDeliveryDateChange} minDate={(tomorrow.valueOf() > new Date('05/06/2023').valueOf()) ? tomorrow : new Date('05/05/2023')} maxDate={new Date('06/30/2023')}/>
             </>
             : 
             <>
             <h5>
+              Contact Information
+            </h5>
+            <div class="mb-3">
+              <label for="name" class="form-label"style = {{color: '#666'}}>Full name</label>
+              <input onChange={handleName} type="text" class="form-control" id="name" style={{marginBottom: '15px'}} />
+              <label for="phone" class="form-label"style = {{color: '#666'}}>Phone Number (optional)</label>
+              <PhoneInput
+               country={'us'}
+               value={phone}
+               onChange={handlePhone}
+               id="phone"
+              />
+            </div>
+            <h5>
               Pick Up Date
             </h5> 
-            <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={handlePickUpDateChange} />
+            <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={handlePickUpDateChange} minDate={(tomorrow.valueOf() > new Date('05/07/2023').valueOf()) ? tomorrow : new Date('05/06/2023')} maxDate={new Date('06/30/2023')}/>
             </>}
             <div class="d-grid gap-2">
               <button onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>

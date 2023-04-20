@@ -3,6 +3,8 @@ import Head from 'next/head'
 import {client} from '../LIB/client'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 
 
 const plants = ({plants, bannerData}) => {

@@ -57,12 +57,6 @@ export default {
             title: 'Features',
             type: 'array',
             of: [{type: 'image'}],
-
-        },
-        {
-            name: 'id',
-            title: 'ID',
-            type: 'string',
         }
     ]
 }

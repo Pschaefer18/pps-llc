@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useStateContext } from '../../context/StateContext'
 import { FaArrowLeft } from 'react-icons/fa'
-import { db } from '../api/inventory'
+import { db } from '../api/firebase'
 import { ref, onValue, get, child } from "firebase/database"
 import { reset } from 'canvas-confetti'
 
@@ -13,7 +13,6 @@ const plantPage = ({ plant, inventory }) => {
   const {image, name, pricing_options, scientific_name, slug, features, description, details} = plant
   const {incQty, decQty, qty, onAdd, resetQty, cartItems, setShowCart} = useStateContext();
   const [option, setOption] = useState(pricing_options[0].option)
-
   useEffect(() => {
     resetQty()
   }, [])
@@ -24,6 +23,10 @@ const plantPage = ({ plant, inventory }) => {
     if (opt !== option) {
       setOption(opt)
     }
+  }
+  const handleOrderNow = () => {
+    onAdd(plant, qty, option)
+    window.location.href = '/checkout'
   }
   return (
     <div>
@@ -64,7 +67,7 @@ const plantPage = ({ plant, inventory }) => {
                   )
                 })}
               </div>
-              <div className="plant-page-left col-md-6">
+              <div className="plant-page-left col-lg-6">
               <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
                   {image.map((img) => {
@@ -129,7 +132,7 @@ const plantPage = ({ plant, inventory }) => {
                     </tr>
                 </table>
               </div>
-              <div className="col-md-6">
+              <div className="col-lg-6">
                 <div className="card-body">
                   <div className="plant-page-reg" style={{ width: "fit-content" }}>
                     <h2 className="card-title">{name}</h2>
@@ -162,18 +165,18 @@ const plantPage = ({ plant, inventory }) => {
                   </p>
                   <div class="container overflow-hidden text-center" style={{marginBottom: "20%"}}>
                     <div class="row">
-                      <div class="col-3">
-                        <h6 >
+                      <div class="col-4">
+                        <h6>
                           Availability:
                         </h6>
                       </div>
                       <div class="col-8">
-                        <h6 className = "text-success" >Available for pre-order
+                        <h6 className = "text-success">Available for pre-order
                         </h6>
                       </div>
                     </div>
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-4">
                           <h6>
                             Price:
                           </h6>
@@ -185,7 +188,7 @@ const plantPage = ({ plant, inventory }) => {
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col-3">
+                        <div className="col-4">
                           <h6>
                             Options:
                           </h6>
@@ -201,7 +204,7 @@ const plantPage = ({ plant, inventory }) => {
                         </div>
                       </div>
                     <div class="row">
-                      <div class="col-3">
+                      <div class="col-4">
                         <h6 >
                           Quantity:
                         </h6>
@@ -252,15 +255,13 @@ const plantPage = ({ plant, inventory }) => {
                     >
                       add to cart
                     </button>
-                    <Link href="/checkout">
                     <button
+                    onClick={handleOrderNow}
                       type="button"
                       className="transaction-button btn btn-primary"
-                    >
+                      style={{textDecoration: 'none'}}                     >
                       Order Now
                     </button>
-                    </Link>
-  
                     </div>
                   </div>
                   <table className="plant-page-phone" id = "details">
@@ -309,7 +310,7 @@ export const getServerSideProps = async ({ params: { slug }}) => {
 
     const plants = await client.fetch(plantsQuery);
     const plant = await client.fetch(query);
-    const inventoryRef = ref(db, `/${plant.name}`)
+    const inventoryRef = ref(db, `/Inventory/${plant.name}`)
     const inventorySnapshot = await get(inventoryRef, '/');
     const inventory = inventorySnapshot.val();
 
