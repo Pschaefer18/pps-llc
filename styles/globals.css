@@ -436,7 +436,7 @@ td {
   -moz-appearance: none;
   background-color: transparent;
   border: none;
-  font-size: clamp(12px,1.25vw,16px);
+  font-size: clamp(11px,1.25vw,16px);
   font-weight: bold;
   color: #006eff;
   cursor: pointer;
