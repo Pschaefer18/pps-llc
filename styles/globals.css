@@ -651,11 +651,6 @@ margin: 5px
   padding-bottom: 0px;
   position: relative;
 }
-@media only screen and (max-width: 450px) {
-  .order-summary p {
-    display: none;
-  }
-}
 
 /* About Page */
 
@@ -1030,4 +1025,12 @@ color: rgba(0,0,0,1)
   border-radius: 20px;
   text-align: center;
   min-height: 60vh;
+}
+@media only screen and (max-width: 450px) {
+  .order-summary p {
+    display: none;
+  }
+  .cart-close {
+    margin-right: 20px;
+  }
 }
