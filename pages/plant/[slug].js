@@ -8,14 +8,26 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { db } from '../api/firebase'
 import { ref, onValue, get, child } from "firebase/database"
 import { reset } from 'canvas-confetti'
+import { DateTime } from 'luxon'
 
 const plantPage = ({ plant, inventory }) => {
-  const {image, name, pricing_options, scientific_name, slug, features, description, details} = plant
+  console.log(plant)
+  const {image, name, variety, pricing_options, scientific_name, slug, features, description, details, category, availability_window} = plant
   const {incQty, decQty, qty, onAdd, resetQty, cartItems, setShowCart} = useStateContext();
   const [option, setOption] = useState(pricing_options[0].option)
+  const [availability, setAvailability] = useState("")
   useEffect(() => {
     resetQty()
   }, [])
+  useEffect(() => {
+
+    if(DateTime.fromISO(availability_window[0]).ts - DateTime.now().ts > 0) {
+      setAvailability("pre-order")
+    } else {
+      setAvailability("available")
+    }
+    console.log()
+  }, [availability_window])
   const getPrice = (option) => {
     return pricing_options.find((opt) => opt.option == option).price
   }
@@ -31,7 +43,7 @@ const plantPage = ({ plant, inventory }) => {
   return (
     <div>
       {console.log(pricing_options[0].option)}
-      {console.log(inventory[`${option}s`])}
+      {console.log(option)}
         <Head>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         </Head>
@@ -48,7 +60,7 @@ const plantPage = ({ plant, inventory }) => {
           >
             <div className="row g-0">
             <div className="titles plant-page-phone"style={{ width: "fit-content" }}>
-                    <h2 className="card-title">{name}</h2>
+                    <h2 className="card-title">{name} {variety && ` Var: ${variety}`}</h2>
                     <h6
                       className="text-muted"
                       style={{
@@ -101,41 +113,65 @@ const plantPage = ({ plant, inventory }) => {
                   <span className="visually-hidden">Next</span>
                 </button>
               </div>
-                <table className="plant-page-reg" id = "details">
-                    <colgroup>
-                        <col style={{width: "50%", paddingRight: "10%"}}></col>
-                        <col style={{float: "right"}}></col>
-                    </colgroup>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
-                            Months in bloom:
-                        </td>
-                        <td>
-                            {details?.hasOwnProperty("bloom") && details.bloom.map((month)=> {return (details.bloom.indexOf(month) != details.bloom.length - 1) ? `${month}, ` : `${month}`})}
-                        </td>
-                    </tr>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
+                {category == "native" ? 
+                (<div className="plant-page-reg" id = "details">
+                  <div className="row" style={{ marginBottom: "1%" }}> 
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                       Months in bloom: 
+                    </div>
+                    <div className="col-6"> {details?.hasOwnProperty("bloom") && details.bloom.map((month)=> {return (details.bloom.indexOf(month) != details.bloom.length - 1) ? `${month}, ` : `${month}`})} 
+                    </div> 
+                  </div> 
+                  <div className="row" style={{ marginBottom: "1%" }}>
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                      Soil moisture:
+                    </div> 
+                    <div className="col-6"> 
+                      {details?.hasOwnProperty("soil_moisture") && details.soil_moisture.map((moisture)=> {return (details.soil_moisture.indexOf(moisture) != details.soil_moisture.length - 1) ? `${moisture}, ` : `${moisture}`})}
+                    </div> 
+                  </div>
+                  <div className="row" style={{ marginBottom: "1%" }}>
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                      Sun exposure:
+                    </div>
+                    <div className="col-6"> 
+                    {details?.hasOwnProperty("sun_exposure") && details.sun_exposure.map((exposure) => {return ((details.sun_exposure.indexOf(exposure) != details.sun_exposure.length - 1) ? `${exposure}, `: `${exposure}`)})} 
+                  </div> 
+                </div> 
+              </div>
+                ) : (
+                  <div className="plant-page-reg" id = "details">
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
+                            Days to maturity:
+                        </div>
+                        <div className="col-6">
+                            {details?.hasOwnProperty("days_to_maturity") && `${details.days_to_maturity} days`}
+                        </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
                             Soil moisture:
-                        </td>
-                        <td>
+                        </div>
+                        <div className="col-6">
                             {details?.hasOwnProperty("soil_moisture") && details.soil_moisture.map((moisture)=> {return (details.soil_moisture.indexOf(moisture) != details.soil_moisture.length - 1) ? `${moisture}, ` : `${moisture}`})}
-                        </td>
-                    </tr>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
+                        </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
                             Sun exposure:
-                        </td>
-                        <td>
+                        </div>
+                        <div className="col-6">
                             {details?.hasOwnProperty("sun_exposure") && details.sun_exposure.map((exposure) => {return ((details.sun_exposure.indexOf(exposure) != details.sun_exposure.length - 1) ? `${exposure}, `: `${exposure}`)})}
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
+                )}
               </div>
               <div className="col-lg-6">
                 <div className="card-body">
                   <div className="plant-page-reg" style={{ width: "fit-content" }}>
-                    <h2 className="card-title">{name}</h2>
+                    <div className="card-title" style={{display: "flex", alignItems: "baseline"}}><h2>{name}</h2> <h5 style = {{marginLeft: '10px'}}>{variety && ` Var: ${variety}`}</h5></div>
                     <h6
                       className="text-muted"
                       style={{
@@ -155,7 +191,7 @@ const plantPage = ({ plant, inventory }) => {
                         )
                       })}
                   </div>
-                  <p className="card-text">{description}</p>
+                  <p style={{marginTop: "20px"}} className="card-text">{description}</p>
                   <p className="card-text">
                     {/* <Link href="/">
                       <small className="growing-info-link text-muted">
@@ -171,8 +207,8 @@ const plantPage = ({ plant, inventory }) => {
                         </h6>
                       </div>
                       <div class="col-8">
-                        <h6 className = "text-success">Available for pre-order
-                        </h6>
+                        {availability == "pre-order" && <h6 style={{color: '#3c5ff9'}}>Pre-order (available: {DateTime.fromISO(availability_window[0]).toFormat('LLL dd, yyyy')})</h6>}
+                        {availability == "available" && <h6 className = "text-success">Available Now</h6>}
                       </div>
                     </div>
                     <div className="row">
@@ -260,40 +296,64 @@ const plantPage = ({ plant, inventory }) => {
                       type="button"
                       className="transaction-button btn btn-primary"
                       style={{textDecoration: 'none'}}                     >
-                      Order Now
+                      {availability == "pre-order" ? "Pre-order Now" : "Order Now"}
                     </button>
                     </div>
                   </div>
-                  <table className="plant-page-phone" id = "details">
-                    <colgroup>
-                        <col style={{width: "50%", paddingRight: "10%"}}></col>
-                        <col style={{float: "right"}}></col>
-                    </colgroup>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
-                            Months in bloom:
-                        </td>
-                        <td>
-                            {details?.hasOwnProperty("bloom") && details.bloom.map((month)=> {return (details.bloom.indexOf(month) != details.bloom.length - 1) ? `${month}, ` : `${month}`})}
-                        </td>
-                    </tr>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
+                  {category == "native" ? 
+                (<div className="plant-page-phone" id = "details">
+                  <div className="row" style={{ marginBottom: "1%" }}> 
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                       In bloom: 
+                    </div>
+                    <div className="col-6"> {details?.hasOwnProperty("bloom") && details.bloom.map((month)=> {return (details.bloom.indexOf(month) != details.bloom.length - 1) ? `${month}, ` : `${month}`})} 
+                    </div> 
+                  </div> 
+                  <div className="row" style={{ marginBottom: "1%" }}>
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                      Soil moisture:
+                    </div> 
+                    <div className="col-6"> 
+                      {details?.hasOwnProperty("soil_moisture") && details.soil_moisture.map((moisture)=> {return (details.soil_moisture.indexOf(moisture) != details.soil_moisture.length - 1) ? `${moisture}, ` : `${moisture}`})}
+                    </div> 
+                  </div>
+                  <div className="row" style={{ marginBottom: "1%" }}>
+                    <div className="col-6" style={{fontWeight: "bold"}}>
+                      Sun exposure:
+                    </div>
+                    <div className="col-6"> 
+                    {details?.hasOwnProperty("sun_exposure") && details.sun_exposure.map((exposure) => {return ((details.sun_exposure.indexOf(exposure) != details.sun_exposure.length - 1) ? `${exposure}, `: `${exposure}`)})} 
+                  </div> 
+                </div> 
+              </div>
+                ) : (
+                  <div className="plant-page-phone" id = "details">
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
+                            Days to maturity:
+                        </div>
+                        <div className="col-6">
+                            {details?.hasOwnProperty("days_to_maturity") && `${details.days_to_maturity} days`}
+                        </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
                             Soil moisture:
-                        </td>
-                        <td>
+                        </div>
+                        <div className="col-6">
                             {details?.hasOwnProperty("soil_moisture") && details.soil_moisture.map((moisture)=> {return (details.soil_moisture.indexOf(moisture) != details.soil_moisture.length - 1) ? `${moisture}, ` : `${moisture}`})}
-                        </td>
-                    </tr>
-                    <tr style={{ marginBottom: "1%" }}>
-                        <td style={{fontWeight: "bold"}}>
+                        </div>
+                    </div>
+                    <div className="row" style={{ marginBottom: "1%" }}>
+                        <div className="col-6" style={{fontWeight: "bold"}}>
                             Sun exposure:
-                        </td>
-                        <td>
+                        </div>
+                        <div className="col-6">
                             {details?.hasOwnProperty("sun_exposure") && details.sun_exposure.map((exposure) => {return ((details.sun_exposure.indexOf(exposure) != details.sun_exposure.length - 1) ? `${exposure}, `: `${exposure}`)})}
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
+                )}
                 </div>
               </div>
             </div>
@@ -310,7 +370,8 @@ export const getServerSideProps = async ({ params: { slug }}) => {
 
     const plants = await client.fetch(plantsQuery);
     const plant = await client.fetch(query);
-    const inventoryRef = ref(db, `/Inventory/${plant.name}`)
+    console.log(plant.slug.current)
+    const inventoryRef = ref(db, `/Inventory/${plant.slug.current}`)
     const inventorySnapshot = await get(inventoryRef, '/');
     const inventory = inventorySnapshot.val();
 

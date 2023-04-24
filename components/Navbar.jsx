@@ -11,16 +11,19 @@ import { useRouter } from "next/router"
 const Navbar = ({plants}) => {
   const { showCart, setShowCart, totalQuantities } = useStateContext()
   const [query, setQuery] = useState("");
+  const [queriedPlants, setQueriedPlants] = useState([])
   const [isTypingA, setIsTypingA] = useState(false)
   const [isTypingB, setIsTypingB] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const divRef = useRef(null)
   const searchRef = useRef(null)
   const phoneSearchRef = useRef(null)
   const phoneDivRef = useRef(null)
   const navigate = useRouter()
-  const search = (q) => {
-    return (plants.filter(plant=> plant.name.toLowerCase().includes(q)))
-  }
+
+  useEffect(() => {
+    setQueriedPlants(plants.filter(plant=> plant.name.toLowerCase().includes(query)))
+  }, [query])
   const onSearch = (event) => {
     const dropdown = event.target.closest('.navbar-collapse');
     dropdown.classList.remove('show');
@@ -30,6 +33,9 @@ const Navbar = ({plants}) => {
   const handleFocus = () => {
     setIsTypingA(true)
     setIsTypingB(true)
+  }
+  const handleMenuClick = () => {
+    showMenu ? setShowMenu(false) : setShowMenu(true)
   }
   useEffect(() => {
     showCart ? document.body.style.setProperty("overflow", "hidden")
@@ -71,8 +77,8 @@ const Navbar = ({plants}) => {
                   </div>
                   <div onClick={handleDivClick} ref={divRef}>
                   {isTypingA && query ? <div className="list">
-                      {plants && search(query).map((plant) => (
-                        <Searchcard plant = {plant} key={plant.slug.current} className="listItem" />
+                      {queriedPlants.map((plant) => (
+                        <Searchcard key={plant._id} plant = {plant} className="listItem" />
                       ))}
                   </div> : null}
                   </div>
@@ -90,19 +96,14 @@ const Navbar = ({plants}) => {
         {showCart && <Cart />}
         <div style = {{display: 'flex'}}>
         <div className="shopping-basket nav-link" style= {{width: "fit-content", padding: "0px", margin: "20px"}}><span onClick={() => {setShowCart(true)}}><FontAwesomeIcon classname = "cart" icon = {faShoppingBasket} color = "rgb(105, 72, 0)" outline = "2px solid black"/></span></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <button onClick={handleMenuClick} class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
         
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+{showMenu && 
+    <div class="navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        {/* <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="#">Create Account</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="#">Login</a>
-        </li> */}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
@@ -121,15 +122,15 @@ const Navbar = ({plants}) => {
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
       {query && isTypingB && <div onClick={handleDivClick} ref={phoneDivRef} className="list">
-        {plants && search(query).map((plant) => (
+        {plants && queriedPlants.map((plant) => (
           <Searchcard plant = {plant} key={plant.slug.current} className="listItem" />
         ))}
-      </div>}
+        </div>}
+      </div>
+      }
     </div>
-  </div>
-        </nav>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    </div>
+  </nav>
+</div>
   )
 }
 

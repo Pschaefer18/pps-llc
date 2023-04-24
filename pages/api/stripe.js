@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           },
           unit_amount: req.body.delivery * 100,
         },
-        quantity: 1
+        quantity: req.body.deliveryQty
       })
       }
       const params = {

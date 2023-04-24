@@ -22,9 +22,9 @@ export default {
             options: {
                 list: [
                     {title: 'Wet', value: 'wet'},
-                    {title: 'Medium Wet', value: 'medium_wet'},
+                    {title: 'Medium Wet', value: 'medium-wet'},
                     {title: 'Medium', value: 'medium'},
-                    {title: 'Medium Dry', value: 'medium_dry'},
+                    {title: 'Medium Dry', value: 'medium-dry'},
                     {title: 'Dry', value: 'dry'}
                 ]
             }
@@ -41,15 +41,20 @@ export default {
             of: [{type: 'string'}],
             options: {
                 list: [
-                    {title: 'April', value: 'april'},
-                    {title: 'May', value: 'may'},
-                    {title: 'June', value: 'june'},
-                    {title: 'July', value: 'july'},
-                    {title: 'August', value: 'august'},
-                    {title: 'September', value: 'september'},
-                    {title: 'October', value: 'october'},
+                    {title: 'April', value: 'April'},
+                    {title: 'May', value: 'May'},
+                    {title: 'June', value: 'June'},
+                    {title: 'July', value: 'July'},
+                    {title: 'August', value: 'August'},
+                    {title: 'September', value: 'September'},
+                    {title: 'October', value: 'October'},
                 ]
             }
+        },
+        {
+            name: 'days_to_maturity',
+            title: 'days to maturity',
+            type: 'number'
         },
         {
             name: 'spacing',

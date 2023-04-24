@@ -21,11 +21,37 @@ const CheckoutPage = () => {
     const [deliveryDistance, setDeliveryDistance] = useState(0);
     const [shippingCost, setShippingCost] = useState(0)
     const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null)
+    const [selectedDeliveryDates, setSelectedDeliveryDates] = useState([])
+    const [selectedPickUpDates, setSelectedPickUpDates] = useState([])
     const [selectedPickUpDate, setSelectedPickUpDate] = useState(null)
     const [stripeAddress, setStripeAddress] = useState({})
     const [name, setName] = useState("")
     const [phone, setPhone] = useState(null)
+    const [singleDelivery, setSingleDelivery] = useState(null)
+    const [earliestCommonDate, setEarliestDate] = useState("")
+    const [dateCategories, setDateCategories] = useState([])
+    const [separatedCart, setSeparatedCart] = useState({})
+    const sepCart = {}
     const tomorrow = new Date(DateTime.now().ts + 86400000)
+    useEffect(() => {
+      var ecd = 0
+      var differentDates = []
+      cartItems.map((item) => {
+        if(DateTime.fromISO(item.availability_window[0]).ts > ecd) {
+          ecd = DateTime.fromISO(item.availability_window[0]).ts
+        }
+        if (differentDates.includes(item.availability_window[0]) == false) {
+          differentDates.push(item.availability_window[0])
+        }
+        differentDates.sort((a, b) => {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        });
+      setEarliestDate(DateTime.fromMillis(ecd).toFormat('yyyy LLL dd'))
+      setDateCategories(differentDates)
+      })
+    }, [cartItems])
     const filterDay = (day) => {
         return (date) => {
             return date.getDay() === day;
@@ -34,9 +60,19 @@ const CheckoutPage = () => {
     const handleDeliveryDateChange = (date) => {
       setSelectedDeliveryDate(date)
     }
-    const handlePickUpDateChange = (date) => {
-        setSelectedPickUpDate(date)
+    const handleDeliveryDatesChange = (date, index) => {
+        var newDates = selectedDeliveryDates
+        newDates[index] = date
+        setSelectedDeliveryDates([...newDates])
       }
+    const handlePickUpDatesChange = (date, index) => {
+        var newDates = selectedPickUpDates
+        newDates[index] = date
+        setSelectedPickUpDates([...newDates])
+      }
+    const handlePickUpDateChange = (date) => {
+      setSelectedPickUpDate(date)
+    }
   
     const handleMethodChange = (event) => {
       if (event.target.value == "delivery") {
@@ -75,7 +111,8 @@ const CheckoutPage = () => {
           body: JSON.stringify({
             cartItems: cartItems,
             address: stripeAddress,
-            delivery: deliveryDistance ? Math.round((deliveryDistance / 1609)) : null
+            delivery: deliveryDistance ? Math.round((deliveryDistance / 1609)) : null,
+            deliveryQty: singleDelivery ? 1 : selectedDeliveryDates.length
         }),
         });
         if(response.statusCode === 500) return;
@@ -87,12 +124,27 @@ const CheckoutPage = () => {
         name: (showAddressInfo ? stripeAddress.name : name),
         phoneNumber: phone,
         pickupDate: selectedPickUpDate,
+        pickupDates: selectedPickUpDates,
         deliveryDate: selectedDeliveryDate,
+        deliveryDates: selectedDeliveryDates,
         deliveryAddress: stripeAddress,
-        delivery: showAddressInfo
+        delivery: showAddressInfo,
+        singleDeliveryPickup: singleDelivery,
+        separatedCart: singleDelivery == false ? sepCart : null
         })
     
         stripe.redirectToCheckout({ sessionId: data.id })
+      }
+      const removeDuplicates = (a) => {
+        var seen = {}
+        var filteredArray = []
+        a.map((item) => {
+          if(!seen[item.name]) {
+            filteredArray.push(item)
+          }
+          seen[item.name] = true
+        })
+        return filteredArray
       }
     console.log(cartItems)
     return (
@@ -204,9 +256,58 @@ const CheckoutPage = () => {
             {showAddressInfo ? 
             <>
             <h5>
-              Delivery Date
-            </h5> 
-            <DatePicker filterDate={filterDay(5)} selected={selectedDeliveryDate} onChange={handleDeliveryDateChange} minDate={(tomorrow.valueOf() > new Date('05/06/2023').valueOf()) ? tomorrow : new Date('05/05/2023')} maxDate={new Date('06/30/2023')}/>
+              Delivery Options
+            </h5>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="deliveryOptions" id="singleDelivery" value="delivery" checked={singleDelivery} onChange={()=> {setSingleDelivery(true)}}/>
+              <label class="form-check-label" for="singleDelivery">
+                  Single Delivery once entire order is available
+              </label>
+              </div>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="deliveryOptions" id="stagedDelivery" value="delivery" checked={singleDelivery == false} onChange={()=> {setSingleDelivery(false)}}/>
+              <label class="form-check-label" for="stagedDelivery">
+                  Select separate delivery dates
+              </label>
+              </div>
+              <h5>
+              Delivery Date{singleDelivery == false && 's'}
+            </h5>
+            {singleDelivery && <DatePicker filterDate={filterDay(5)} selected={selectedDeliveryDate} onChange={(date) => handleDeliveryDateChange(date)} minDate={(tomorrow.valueOf() > new Date(earliestCommonDate).valueOf()) ? tomorrow : new Date(earliestCommonDate)} maxDate={new Date('06/30/2023')}/>}
+            {singleDelivery == false &&
+            <>
+            { dateCategories.map((date, i) => {
+              sepCart[i] = []
+              var nextDay = ""
+              var index = dateCategories.indexOf(date)
+              if (i == dateCategories.length - 1) {
+                nextDay = "2023-06-23"
+              } else {
+                nextDay = dateCategories[dateCategories.indexOf(date) + 1]
+              }
+              return <div className="row" style={{borderBottom: '1px dashed black', paddingBottom: '20px', marginBottom: '10px'}}>
+              <ul className="col-6">
+                {removeDuplicates(cartItems).map((item) => {
+                  if(DateTime.fromISO(item.availability_window[0]).ts - DateTime.fromISO(date).ts >= 0 && DateTime.fromISO(item.availability_window[0]).ts - DateTime.fromISO(nextDay).ts < 0) {
+                    sepCart[i].push({
+                      name: item.name,
+                      variety: item.hasOwnProperty('variety') ? item.variety: null,
+                      option: item.option,
+                      qty: item.quantity
+                    })
+                    return <li>{item.name}</li>
+                  }
+                })}
+              </ul>
+              <div className="col-6">
+                <h7>Date</h7>
+                <DatePicker filterDate={filterDay(5)} selected={selectedDeliveryDates[index]} onChange={(date) => handleDeliveryDatesChange(date, index)} minDate={(tomorrow.valueOf() > new Date(date).valueOf()) ? tomorrow : new Date(date)} maxDate={new Date(nextDay)}/>
+              </div>
+            </div>
+            })
+            }
+            </>  
+            }
             </>
             : 
             <>
@@ -225,9 +326,59 @@ const CheckoutPage = () => {
               />
             </div>
             <h5>
-              Pick Up Date
-            </h5> 
-            <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={handlePickUpDateChange} minDate={(tomorrow.valueOf() > new Date('05/07/2023').valueOf()) ? tomorrow : new Date('05/06/2023')} maxDate={new Date('06/30/2023')}/>
+              Pick Up Options
+            </h5>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="deliveryOptions" id="singleDelivery" value="delivery" checked={singleDelivery} onChange={()=> {setSingleDelivery(true)}}/>
+              <label class="form-check-label" for="singleDelivery">
+                  Pick up one time when entire order is available
+              </label>
+              </div>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="deliveryOptions" id="stagedDelivery" value="delivery" checked={singleDelivery == false} onChange={()=> {setSingleDelivery(false)}}/>
+              <label class="form-check-label" for="stagedDelivery">
+                  Select separate pick up days
+              </label>
+              </div>
+            <h5>
+              Pick Up Date{singleDelivery == false && 's'}
+            </h5>
+            {singleDelivery && <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={(date) => handlePickUpDateChange(date)} minDate={(tomorrow.valueOf() > new Date(earliestCommonDate).valueOf()) ? tomorrow : new Date(earliestCommonDate)} maxDate={new Date('06/30/2023')}/>}
+            {singleDelivery == false &&
+            <>
+            {
+              dateCategories.map((date, i) => {
+              sepCart[i] = []
+              var nextDay = ""
+              var index = dateCategories.indexOf(date)
+              if (i == dateCategories.length - 1) {
+                nextDay = "2023-06-23"
+              } else {
+                nextDay = dateCategories[dateCategories.indexOf(date) + 1]
+              }
+              return <div className="row" style={{borderBottom: '1px dashed black', paddingBottom: '20px', marginBottom: '10px'}}>
+              <ul className="col-6">
+                {removeDuplicates(cartItems).map((item) => {
+                  if(DateTime.fromISO(item.availability_window[0]).ts - DateTime.fromISO(date).ts >= 0 && DateTime.fromISO(item.availability_window[0]).ts - DateTime.fromISO(nextDay).ts < 0) {
+                    sepCart[i].push({
+                      name: item.name,
+                      variety: item.hasOwnProperty('variety') ? item.variety: null,
+                      option: item.option,
+                      qty: item.quantity
+                    })
+                    return <li>{item.name}</li>
+                  }
+                })
+                }
+              </ul>
+              <div className="col-6">
+                <h7>Date</h7>
+                <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDates[index]} onChange={(date) => handlePickUpDatesChange(date, index)} minDate={(tomorrow.valueOf() > new Date(date).valueOf()) ? tomorrow : new Date(date)} maxDate={new Date(nextDay)}/>
+              </div>
+            </div>
+            })}
+            </>  
+            }
             </>}
             <div class="d-grid gap-2">
               <button onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>
