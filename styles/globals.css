@@ -1,6 +1,10 @@
 :root {
  --checkout-order-summary-height: 260px;
  --footer-height: 105px;
+ --filter-color-A: black;
+ --filter-color-B: rgba(0,0,0,0.25);
+ --filter-color-C: white;
+ --filter-color-D: white;
 }
 
 body{
@@ -365,9 +369,10 @@ td {
   margin-top: 4%;
   padding: 0.5% 1% 0.5% 1%;
   color: white;
+  background-color: rgba(0,0,0,0.25);
   font-size: 2em;
   border: 5px solid white;
-  border-radius: 20px;
+  border-radius: 10px;
   width: fit-content;
 }
 #plants-grid {
@@ -594,7 +599,6 @@ margin: 5px
 .cart-specs{
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
 }
 .cart-specs tr{
@@ -911,10 +915,15 @@ margin: 5px
 }
 .search-card{
   color: rgba(0,0,0,0.5);
+  min-width: 20vw;
+}
+.search-card {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid rgb(169, 169, 169);
 }
 .search-card:hover {
 cursor: pointer;
-border: 2px solid black;
 color: rgba(0,0,0,1)
 }
 /* Checkout Page */
@@ -1009,6 +1018,48 @@ color: rgba(0,0,0,1)
 
 /* Checkout page for mobile */
 @media only screen and (max-width: 1100px) {
+  :root {
+    --filter-color-A: black;
+    --filter-color-B: white;
+    --filter-color-C: white;
+    --filter-color-D: black;
+   }
+  /* filter plants */
+  .plants-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  .plants-filter div {
+    color: white;
+    min-width: 125px;
+    display: flex;
+    flex: 1;
+    align-self: stretch;
+    justify-content: center;
+    align-items: center;
+    font-size: 100%;
+    font-weight: 700;
+    text-align: center;
+    padding: 0.5% 1%;
+    margin: 0px 5px;
+    border: 5px solid black;
+    border-radius: 10px;
+  }
+  .plants-filter div:hover {
+    cursor: pointer;
+  }
+  #page-title {
+    margin-top: 4%;
+    padding: 0.5% 1% 0.5% 1%;
+    color: black;
+    background-color: white;
+    font-size: 2em;
+    border: 5px solid black;
+    border-radius: 10px;
+    width: fit-content;
+  }
   .checkout {
     width: 100%;
     margin-top: 50px;

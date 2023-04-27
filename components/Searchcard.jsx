@@ -11,6 +11,7 @@ const Searchcard = ({plant}) => {
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{plant.name}</h5>
+                {plant.variety && <h6 style={{height: "25px"}}>Var: {plant.variety}</h6>}
                 <p class="card-text"><small class="text-muted">${plant.pricing_options[0].price}.00 {(plant.pricing_options.length > 1) && (` - $${(plant.pricing_options[plant.pricing_options.length - 1].price)}.00`)}</small></p>
               </div>
             </div>

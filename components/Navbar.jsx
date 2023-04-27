@@ -22,7 +22,7 @@ const Navbar = ({plants}) => {
   const navigate = useRouter()
 
   useEffect(() => {
-    setQueriedPlants(plants.filter(plant=> plant.name.toLowerCase().includes(query)))
+    setQueriedPlants(plants.filter(plant=> plant.name.toLowerCase().includes(query) || plant.variety?.toLowerCase().includes(query)))
   }, [query])
   const onSearch = (event) => {
     const dropdown = event.target.closest('.navbar-collapse');

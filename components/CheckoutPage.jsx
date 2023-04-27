@@ -173,6 +173,7 @@ const CheckoutPage = () => {
                                     <div class="col-md-8">
                                       <div class="card-body checkout-card">
                                         <h5 class="card-title">{item.name}</h5>
+                                        {item.variety && <h6 style={{height: "25px"}}>Var: {item.variety}</h6>}
                                         <div className="cart-content">
                                           <div className = "cart-specs">
                                             <table>
