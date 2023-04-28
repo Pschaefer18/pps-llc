@@ -51,7 +51,7 @@ const CheckoutPage = () => {
         if (differentDates.length == 1) {
           setSingleDelivery(true)
         }
-      setEarliestDate(DateTime.fromMillis(ecd).toFormat('yyyy LLL dd'))
+      setEarliestDate(DateTime.fromMillis(ecd).toFormat('LL/dd/yyyy '))
       setDateCategories(differentDates)
       })
     }, [cartItems])
@@ -351,7 +351,7 @@ const CheckoutPage = () => {
             <h5>
               Pick Up Date{singleDelivery == false && 's'}
             </h5>
-            {singleDelivery && <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={(date) => handlePickUpDateChange(date)} minDate={new Date(earliestCommonDate)} maxDate={new Date('06/30/2023')}/>}
+            {singleDelivery && <DatePicker filterDate={filterDay(6)} selected={selectedPickUpDate} onChange={(date) => handlePickUpDateChange(date)} minDate={(tomorrow.valueOf() > new Date(earliestCommonDate).valueOf()) ? tomorrow : new Date(earliestCommonDate)} maxDate={new Date('06/30/2023')}/>}
             {singleDelivery == false &&
             <>
             {
