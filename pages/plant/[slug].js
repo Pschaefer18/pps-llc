@@ -277,14 +277,19 @@ const plantPage = ({ plant, inventory }) => {
                         </div>
                       </div>
                       <div class="col-4">
-                      {<span style={{marginLeft: "10px", color: "green"}}>{inventory[`${option}s`]} in stock </span>}
+                      { inventory[`${option}s`] ?
+                        <span style={{marginLeft: "10px", color: "green"}}>{Math.floor(inventory[`${option}s`])} in stock </span>
+                      :
+                        <span style={{marginLeft: "10px", color: "black", fontWeight: "bolda"}}> out of stock</span>}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="transaction-buttons">
+
+                    <div className="transaction-buttons">
                     <div style={{ position: "relative", display: "flex", justifyContent: "space-evenly"}}>
                     <button
+                      disabled = {!(inventory[`${option}s`])}
                       onClick={() => onAdd(plant, qty, option)}
                       type="button"
                       className="transaction-button btn btn-primary"
@@ -292,14 +297,17 @@ const plantPage = ({ plant, inventory }) => {
                       add to cart
                     </button>
                     <button
-                    onClick={handleOrderNow}
+                      disabled = {!(inventory[`${option}s`])}
+                      onClick={handleOrderNow}
                       type="button"
                       className="transaction-button btn btn-primary"
                       style={{textDecoration: 'none'}}                     >
                       {availability == "pre-order" ? "Pre-order Now" : "Order Now"}
                     </button>
                     </div>
-                  </div>
+                    </div>  
+                  
+                  
                   {category == "native" ? 
                 (<div className="plant-page-phone" id = "details">
                   <div className="row" style={{ marginBottom: "1%" }}> 

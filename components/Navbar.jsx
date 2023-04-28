@@ -22,7 +22,7 @@ const Navbar = ({plants}) => {
   const navigate = useRouter()
 
   useEffect(() => {
-    setQueriedPlants(plants.filter(plant=> plant.name.toLowerCase().includes(query) || plant.variety?.toLowerCase().includes(query)))
+    setQueriedPlants(plants ? plants.filter(plant=> plant.name.toLowerCase().includes(query) || plant.variety?.toLowerCase().includes(query)) : [])
   }, [query])
   const onSearch = (event) => {
     const dropdown = event.target.closest('.navbar-collapse');
@@ -66,7 +66,7 @@ const Navbar = ({plants}) => {
       {/* {console.log(plants)} */}
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div style={{width: "100%"}}class="container-fluid">
-        <img className="logo" src='https://i.imgur.com/GZFz9ge.png' alt="" />
+        <img onClick = {() => {navigate.push('./')}} className="logo" src='https://i.imgur.com/GZFz9ge.png' alt="" />
         <div className="center-nav">
             <div className="flex-search-container">
                   <div className="searchbar" ref={searchRef}>
@@ -123,7 +123,7 @@ const Navbar = ({plants}) => {
       </form>
       {query && isTypingB && <div onClick={handleDivClick} ref={phoneDivRef} className="list">
         {plants && queriedPlants.map((plant) => (
-          <Searchcard plant = {plant} key={plant.slug.current} className="listItem" />
+          <Searchcard plant = {plant} key={plant._id} className="listItem" />
         ))}
         </div>}
       </div>

@@ -48,6 +48,9 @@ const CheckoutPage = () => {
           if (a > b) return 1;
           return 0;
         });
+        if (differentDates.length == 1) {
+          setSingleDelivery(true)
+        }
       setEarliestDate(DateTime.fromMillis(ecd).toFormat('yyyy LLL dd'))
       setDateCategories(differentDates)
       })
@@ -256,6 +259,8 @@ const CheckoutPage = () => {
             </h6> : null}
             {showAddressInfo ? 
             <>
+            {(dateCategories.length > 1) && 
+            <>
             <h5>
               Delivery Options
             </h5>
@@ -270,7 +275,8 @@ const CheckoutPage = () => {
               <label class="form-check-label" for="stagedDelivery">
                   Select separate delivery dates
               </label>
-              </div>
+              </div></>
+              }
               <h5>
               Delivery Date{singleDelivery == false && 's'}
             </h5>
@@ -326,7 +332,8 @@ const CheckoutPage = () => {
                id="phone"
               />
             </div>
-            <h5>
+            {dateCategories.length > 1 &&
+            <><h5>
               Pick Up Options
             </h5>
               <div class="form-check">
@@ -340,7 +347,7 @@ const CheckoutPage = () => {
               <label class="form-check-label" for="stagedDelivery">
                   Select separate pick up days
               </label>
-              </div>
+              </div></>}
             <h5>
               Pick Up Date{singleDelivery == false && 's'}
             </h5>

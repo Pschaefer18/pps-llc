@@ -59,28 +59,23 @@ const success = () => {
           // orderedAt: date
           })
           console.log("pushed")
-          const updateInventory = async () => {
-            cartItems.map(async(item) => {
-              const itemRef = ref(db, `/Inventory/${item.slug.current}/${item.option}s`)
-              const currentValueSnapShot = await get(itemRef, '/')
-              const currentValue = currentValueSnapShot.val()
-              set(itemRef, currentValue - item.quantity)
-              if (item.option == "Four pack") {
-                const itemRef = ref(db, `/Inventory/${item.slug.current}/Eight packs`)
+          const updateInventory = async (item, option_to_check, option_to_update, multiplier) => {
+            
+              if (item.option == option_to_check) {
+                const itemRef = ref(db, `/Inventory/${item.slug.current}/${option_to_update}s`)
                 const currentValueSnapShot = await get(itemRef, '/')
                 const currentValue = currentValueSnapShot.val()
-                set(itemRef, currentValue - item.quantity/2)
+                await set(itemRef, currentValue - item.quantity * multiplier)
               }
-              if (item.option == "Eight pack") {
-                const itemRef = ref(db, `/Inventory/${item.slug.current}/Four packs`)
-                const currentValueSnapShot = await get(itemRef, '/')
-                const currentValue = currentValueSnapShot.val()
-                set(itemRef, currentValue - item.quantity * 2)
-              }
-            })
           }
-          updateInventory()
-          setCartItems([])
+          cartItems.forEach(async(item) => {
+            await updateInventory(item, item.option, item.option, 1,)
+            await updateInventory(item, "Four pack", "Eight pack", 0.5,)
+            await updateInventory(item, "Eight pack", "Four pack", 2,)
+            await updateInventory(item, "Six pack", "twelve pack", 0.5,)
+            await updateInventory(item, "Twelve pack", "Six pack", 2,)
+          })
+        setCartItems([])
     }}, [customerInfo])
   return (
     <>
