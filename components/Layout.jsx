@@ -6,7 +6,7 @@ const Layout = ({children}) => {
   return (
     <div>
       <Head>
-        <title>PPS</title>
+        <title>Paul's Plant Starts</title>
       </Head>
       <header>
         <Navbar plants = {children[1].props.plants}/>
