@@ -389,7 +389,7 @@ const CheckoutPage = () => {
             }
             </>}
             <div class="d-grid gap-2">
-              <button onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>
+              <button disabled = {cartItems.length == 0 ? true : false} onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>
             </div>
             </form>
           </div>
