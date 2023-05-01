@@ -15,7 +15,7 @@ import { DateTime } from "luxon";
 
 
 const CheckoutPage = () => {
-  const { totalPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty, addCustomerInfo } = useStateContext();
+  const { totalPrice, adjustedPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty, addCustomerInfo, discounts } = useStateContext();
   const google_maps_api = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     const [showAddressInfo, setShowAddressInfo] = useState(true);
     const [deliveryDistance, setDeliveryDistance] = useState(0);
@@ -113,6 +113,8 @@ const CheckoutPage = () => {
           },
           body: JSON.stringify({
             cartItems: cartItems,
+            totalPrice: totalPrice,
+            adjustedPrice: adjustedPrice,
             address: stripeAddress,
             delivery: deliveryDistance ? Math.round((deliveryDistance / 1609)) : null,
             deliveryQty: singleDelivery ? 1 : selectedDeliveryDates.length
@@ -216,9 +218,32 @@ const CheckoutPage = () => {
                                 })}
                               </div>
                             )}
-                <div className="subtotal checkout-subtotal">
-                  <h2>Subtotal</h2>
-                  <h3 style={{padding: '0', paddingRight: '20px'}}>${totalPrice}.00</h3>
+                <div className="checkout-summary">
+                {(adjustedPrice < totalPrice) && <>
+                  <div className="row">
+                    <div className="col-8">
+                      <h5 style={{textAlign: "left", paddingLeft: '20px'}}>Subtotal</h5>
+                    </div>
+                    <div className="col-4">
+                    <h5 style={{textAlign: "left"}}> ${totalPrice}.00</h5>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8">
+                      <h5 style={{textAlign: "left", paddingLeft: '20px'}}>Discount</h5>
+                    </div>
+                    <div className="col-4">
+                    <h5 style={{color: 'red', textAlign: "left", marginLeft: '-7.5px'}}>-${totalPrice-adjustedPrice}.00</h5>
+                    </div>
+                  </div> </>}
+                  <div className="row">
+                    <div className="col-8">
+                      <h3 style={{textAlign: "left", paddingLeft: '20px'}}>Total</h3>
+                    </div>
+                    <div className="col-4">
+                    <h3 style={{textAlign: "left"}}>${adjustedPrice}.00</h3>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>

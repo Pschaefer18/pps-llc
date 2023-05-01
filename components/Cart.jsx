@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBasket, faX } from "@fortawesome/free-solid-svg-icons";
 import getStripe from "../LIB/getStripe";
 const Cart = () => {
-  const { totalPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty } = useStateContext();
+  const { totalPrice, adjustedPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty } = useStateContext();
   console.log(cartItems)
   const cartRef = useRef()
 
@@ -83,10 +83,31 @@ const Cart = () => {
                               })}
                             </div>
                           <div className="order-summary">
-                              <div className="subtotal">
-                                <h2>Subtotal</h2>
-                                <h3 style={{padding: '0', paddingRight: '20px'}}>${totalPrice}.00</h3>
-                              </div>
+                          {(adjustedPrice < totalPrice) && <>
+                  <div className="row">
+                    <div className="col-8">
+                      <h5 style={{textAlign: "left", paddingLeft: '20px'}}>Subtotal</h5>
+                    </div>
+                    <div className="col-4">
+                    <h5 style={{textAlign: "left"}}> ${totalPrice}.00</h5>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8">
+                      <h5 style={{textAlign: "left", paddingLeft: '20px'}}>Discount</h5>
+                    </div>
+                    <div className="col-4">
+                    <h5 style={{color: 'red', textAlign: "left", marginLeft: '-7.5px'}}>-${totalPrice-adjustedPrice}.00</h5>
+                    </div>
+                  </div> </>}
+                  <div className="row">
+                    <div className="col-8">
+                      <h3 style={{textAlign: "left", padding: "0", paddingLeft: "20px"}}>Total</h3>
+                    </div>
+                    <div className="col-4">
+                    <h3 style={{textAlign: "left", padding: "0"}}>${adjustedPrice}.00</h3>
+                    </div>
+                  </div>
                               <p style={{textAlign: "center", padding: "10px"}}>
                                 Pick-up/delivery dates are selected in checkout
                               </p>

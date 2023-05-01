@@ -22,6 +22,74 @@ const plants = ({plants, bannerData}) => {
           <h2 id="page-title">
             PLANTS
           </h2>
+          <div className='discount-info'>
+            <h4>
+              Bulk Discounts
+            </h4>
+            <h6>
+              (Mix and Match)
+            </h6>
+            <div className="row">
+              <div className="col-6">
+                <h5>
+                  Native Perennials
+                </h5>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    18 Singles:
+                  </div>
+                  <div className="col-4 col-md-6">
+                    $54
+                  </div>
+                </div>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    3 x 8-packs:
+                  </div>
+                  <div className="col-4 col-md-6">
+                  $30
+                  </div>
+                </div>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    6 x 8-packs:
+                  </div>
+                  <div className="col-4 col-md-6">
+                  $50
+                  </div>
+                </div>
+              </div>
+              <div className="col-6">
+                <h5>
+                  Vegetable Starts
+                </h5>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    18 Singles:
+                  </div>
+                  <div className="col-4 col-md-6">
+                    $40
+                  </div>
+                </div>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    3 x 8-packs:
+                  </div>
+                  <div className="col-4 col-md-6">
+                  $20
+                  </div>
+                </div>
+                <div className="row">
+                  <div style={{textAlign:'right'}} className="col-8 col-md-6">
+                    6 x 8-packs:
+                  </div>
+                  <div className="col-4 col-md-6">
+                  $35
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className='plants-filter'>
             <div style={{backgroundColor: filter ? 'var(--filter-color-B)': 'var(--filter-color-A)', color: filter ? 'var(--filter-color-D)': 'var(--filter-color-C)'}} onClick={() => setFilter(null)}>Show All</div>
             <div style={{backgroundColor: filter == "native" ? 'var(--filter-color-A)' : 'var(--filter-color-B)', color: filter == "native" ? 'var(--filter-color-C)': 'var(--filter-color-D)'}} onClick={() => setFilter("native")}>Native Perennials</div>

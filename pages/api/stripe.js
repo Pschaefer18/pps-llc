@@ -18,8 +18,11 @@ export default async function handler(req, res) {
             },
             unit_amount: item.price * 100,
           },
-          adjustable_quantity: {
-            enabled:true,
+          adjustable_quantity:
+          req.body.totalPrice > req.body.adjustedPrice ? {
+            enabled: false
+          } : {
+            enabled: true,
             minimum: 1,
           },
           quantity: item.quantity
@@ -37,6 +40,15 @@ export default async function handler(req, res) {
         quantity: req.body.deliveryQty
       })
       }
+      var coupon
+      if (req.body.totalPrice > req.body.adjustedPrice) {
+          coupon = await stripe.coupons.create({
+          name: 'Bulk Discount',
+          currency: 'usd',
+          amount_off: (req.body.totalPrice - req.body.adjustedPrice) * 100,
+          duration: 'once'
+        });
+      }
       const params = {
         line_items: lineItems,
         automatic_tax: {
@@ -48,6 +60,10 @@ export default async function handler(req, res) {
         billing_address_collection: 'auto',
         success_url: `${req.headers.origin}/success`,
         cancel_url: `${req.headers.origin}/checkout`,
+        discounts: [
+          coupon && {
+          coupon: coupon.id // Apply the coupon to the Checkout Session
+        }]
       }
 
       // Create Checkout Sessions from body params.
