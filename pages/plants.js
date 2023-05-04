@@ -47,7 +47,7 @@ const plants = ({plants, bannerData}) => {
                     3 x 8-packs:
                   </div>
                   <div className="col-4 col-md-6">
-                  $30
+                  $24
                   </div>
                 </div>
                 <div className="row">
@@ -55,7 +55,7 @@ const plants = ({plants, bannerData}) => {
                     6 x 8-packs:
                   </div>
                   <div className="col-4 col-md-6">
-                  $50
+                  $45
                   </div>
                 </div>
               </div>

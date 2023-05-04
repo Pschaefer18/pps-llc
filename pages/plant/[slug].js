@@ -28,6 +28,17 @@ const plantPage = ({ plant, inventory }) => {
     }
     console.log()
   }, [availability_window])
+  const mapOptionName = (option) => {
+    const sanityOptionNames = ["Single", "Four pack", "Eight pack", "Six pack", "Twelve pack"]
+    const firebaseOptionNames = ["Singles", "Half packs", "Full packs", "Half packs", "Full packs"]
+    console.log(firebaseOptionNames[sanityOptionNames.indexOf(option)])
+    if (sanityOptionNames.indexOf(option) != -1) {
+      console.log(option)
+      return firebaseOptionNames[sanityOptionNames.indexOf(option)]
+    }
+    console.log(option)
+    return option
+  }
   const getPrice = (option) => {
     return pricing_options.find((opt) => opt.option == option).price
   }
@@ -39,6 +50,10 @@ const plantPage = ({ plant, inventory }) => {
   const handleOrderNow = () => {
     onAdd(plant, qty, option)
     window.location.href = '/checkout'
+  }
+  const handleAddToCart = () => {
+    onAdd(plant, qty, option)
+    setShowCart(true)
   }
   return (
     <div>
@@ -277,8 +292,8 @@ const plantPage = ({ plant, inventory }) => {
                         </div>
                       </div>
                       <div class="col-4">
-                      { inventory[`${option}s`] ?
-                        <span style={{marginLeft: "10px", color: "green"}}>{Math.floor(inventory[`${option}s`])} in stock </span>
+                      { inventory[mapOptionName(option)] ?
+                        <span style={{marginLeft: "10px", color: "green"}}>{Math.floor(inventory[mapOptionName(option)])} in stock </span>
                       :
                         <span style={{marginLeft: "10px", color: "black", fontWeight: "bolda"}}> out of stock</span>}
                       </div>
@@ -289,15 +304,15 @@ const plantPage = ({ plant, inventory }) => {
                     <div className="transaction-buttons">
                     <div style={{ position: "relative", display: "flex", justifyContent: "space-evenly"}}>
                     <button
-                      disabled = {!(inventory[`${option}s`])}
-                      onClick={() => onAdd(plant, qty, option)}
+                      disabled = {!(inventory[mapOptionName(option)])}
+                      onClick={handleAddToCart}
                       type="button"
                       className="transaction-button btn btn-primary"
                     >
                       add to cart
                     </button>
                     <button
-                      disabled = {!(inventory[`${option}s`])}
+                      disabled = {!(inventory[mapOptionName(option)])}
                       onClick={handleOrderNow}
                       type="button"
                       className="transaction-button btn btn-primary"

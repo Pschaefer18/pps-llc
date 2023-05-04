@@ -59,6 +59,11 @@ const success = () => {
           // orderedAt: date
           })
           console.log("pushed")
+          const mapOptionName = (option) => {
+            const sanityOptionNames = ["Single", "Four pack", "Eight pack", "Six pack", "Twelve pack"]
+            const firebaseOptionNames = ["Singles", "Half packs", "Full packs", "Half packs", "Full packs"]
+            return firebaseOptionNames[sanityOptionNames.indexOf(option)]
+          }
           const updateInventory = async (item, option_to_check, option_to_update, multiplier) => {
             
               if (item.option == option_to_check) {
@@ -69,11 +74,11 @@ const success = () => {
               }
           }
           cartItems.forEach(async(item) => {
-            await updateInventory(item, item.option, item.option, 1,)
-            await updateInventory(item, "Four pack", "Eight pack", 0.5,)
-            await updateInventory(item, "Eight pack", "Four pack", 2,)
-            await updateInventory(item, "Six pack", "twelve pack", 0.5,)
-            await updateInventory(item, "Twelve pack", "Six pack", 2,)
+            await updateInventory(item, item.option, mapOptionName(item.option), 1,)
+            await updateInventory(item, "Four pack", "Full packs", 0.5,)
+            await updateInventory(item, "Eight pack", "Half packs", 2,)
+            await updateInventory(item, "Six pack", "Full packs", 0.5,)
+            await updateInventory(item, "Twelve pack", "Half packs", 2,)
           })
         setCartItems([])
     }}, [customerInfo])

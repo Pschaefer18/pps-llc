@@ -76,8 +76,7 @@ export const StateContext = ({ children }) => {
         const {bulkSingles, nativeBulkSingles, bulk24Packs, nativeBulk24Packs, bulk48Packs, nativeBulk48Packs} = discounts
         console.log(totalPrice)
         console.log(discounts)
-        console.log(totalPrice - (bulkSingles * 12 + nativeBulkSingles * 18 + bulk24Packs * 4 + nativeBulk24Packs * 6 + bulk48Packs * 13 + nativeBulk48Packs * 22))
-        setAdjustedPrice(totalPrice - (bulkSingles * 12 + nativeBulkSingles * 18 + bulk24Packs * 4 + nativeBulk24Packs * 6 + bulk48Packs * 13 + nativeBulk48Packs * 22))
+        setAdjustedPrice(totalPrice - (bulkSingles * 14 + nativeBulkSingles * 18 + bulk24Packs * 4 + nativeBulk24Packs * 6 + bulk48Packs * 13 + nativeBulk48Packs * 15))
       }, [discounts])
     useEffect(() => {
       localStorage.setItem('customerInfo', JSON.stringify(customerInfo))
@@ -141,7 +140,6 @@ export const StateContext = ({ children }) => {
                 setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
                 setAdjustedPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
             }
-            
     }
     const addCustomerInfo = (info) => {
         setCustomerInfo(info)

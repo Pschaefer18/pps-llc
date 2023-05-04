@@ -31,6 +31,7 @@ const CheckoutPage = () => {
     const [earliestCommonDate, setEarliestDate] = useState("")
     const [dateCategories, setDateCategories] = useState([])
     const [separatedCart, setSeparatedCart] = useState({})
+    const [allowCheckout, setAllowCheckout] = useState(false)
     const sepCart = {}
     const tomorrow = new Date(DateTime.now().ts + 86400000)
     useEffect(() => {
@@ -55,6 +56,13 @@ const CheckoutPage = () => {
       setDateCategories(differentDates)
       })
     }, [cartItems])
+    useEffect(() => {
+      if (cartItems.length > 0 && ((showAddressInfo && stripeAddress && ((singleDelivery && selectedDeliveryDate) || (!singleDelivery && selectedDeliveryDates.length == dateCategories.length))) || (!showAddressInfo && name && ((singleDelivery && selectedPickUpDate) || (!singleDelivery && selectedPickUpDates.length == dateCategories.length))))) {
+        setAllowCheckout(true)
+      } else {
+        setAllowCheckout(false)
+      }
+    }, [cartItems, selectedDeliveryDate, selectedDeliveryDates, selectedPickUpDates, selectedPickUpDate, stripeAddress, name, phone, showAddressInfo, singleDelivery])
     const filterDay = (day) => {
         return (date) => {
             return date.getDay() === day;
@@ -414,7 +422,7 @@ const CheckoutPage = () => {
             }
             </>}
             <div class="d-grid gap-2">
-              <button disabled = {cartItems.length == 0 ? true : false} onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>
+              <button disabled = {allowCheckout? false : true} onClick={handleStripe} class="btn checkout-button" type="button">Complete Checkout w/ Stripe</button>
             </div>
             </form>
           </div>
