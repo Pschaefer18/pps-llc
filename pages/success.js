@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useStateContext } from "../context/StateContext"
 import {ordersRef, db } from "../pages/api/firebase"
 import { push, set, get, ref} from "firebase/database"
+import getStripe from "../LIB/getStripe"
 import Head from 'next/head'
 import {DateTime} from 'luxon'
 
@@ -10,8 +11,19 @@ const success = () => {
     const date = now.toLocaleString(DateTime.DATETIME_MED)
     console.log(date)
     const {customerInfo, cartItems, setCartItems} = useStateContext()
+    const {email, setEmail} = useState('')
     const shortenedCart = []
     const separatedCart = {}
+
+    const getEmail = async() => {
+    const stripe = await getStripe()
+    const sessionId = customerInfo.sessionID;
+    if (sessionId) {
+        const session = await stripe.checkout.sessions.retrieve(sessionId)
+        return(session.customer_email)
+    }
+  }
+
     cartItems.map((item) => {
       shortenedCart.push({
         name: item.name,
@@ -46,6 +58,7 @@ const success = () => {
     }
     useEffect(() => {
         if (customerInfo.name && cartItems.length > 0) {
+          console.log(customerInfo)
           push(ordersRef, {
           name: customerInfo.name,
           phoneNumber: customerInfo.phoneNumber,
@@ -92,10 +105,10 @@ const success = () => {
           {customerInfo.name && <h2>Thank You, {customerInfo.name.slice(0, customerInfo.name.search(" "))}!</h2>}
           <h3>Your order has been placed</h3>
           {customerInfo.delivery && 
-          <h5>Your plants will be delivered on {customerInfo.singleDeliveryPickup ?  toDateString(customerInfo.deliveryDate): `${toDateStrings(customerInfo.deliveryDates).join(' and ')}`}</h5>}
+          <h5>Your plants will be delivered on {customerInfo.singleDeliveryPickup ?  toDateString(customerInfo.deliveryDate): `${toDateStrings(customerInfo.deliveryDates).join(' and ')}`}<br/>You've been sent a confirmation email of your purchase</h5>}
 
           {customerInfo.delivery == false && 
-          <h5>Your plants will be ready for pickup on {customerInfo.singleDeliveryPickup ?  toDateString(customerInfo.pickupDate): `${toDateStrings(customerInfo.pickupDates).join(' and ')}`} at the Farmington Farmers Market between 9am and 2pm</h5>}
+          <h5>Your plants will be ready for pickup on {customerInfo.singleDeliveryPickup ?  toDateString(customerInfo.pickupDate): `${toDateStrings(customerInfo.pickupDates).join(' and ')}`} at the Farmington Farmers Market between 9am and 2pm<br/>You've been sent a confirmation email of your purchase</h5>}
         </div>
       </body>
     </>

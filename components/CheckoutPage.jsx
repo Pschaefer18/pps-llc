@@ -143,8 +143,9 @@ const CheckoutPage = () => {
         deliveryAddress: stripeAddress,
         delivery: showAddressInfo,
         singleDeliveryPickup: singleDelivery,
-        separatedCart: singleDelivery == false ? sepCart : null
-        })
+        separatedCart: singleDelivery == false ? sepCart : null,
+        sessionID: data.id
+      })
     
         stripe.redirectToCheckout({ sessionId: data.id })
       }
