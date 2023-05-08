@@ -45,6 +45,7 @@ const landscaping = () => {
                 <div className="images">
                     <div>
                         <img src="/static/IMG_0618.jpeg" />
+                        <h3>Raised bed with soil</h3>
                         <h3>$350</h3>
                     </div>
                     <div>

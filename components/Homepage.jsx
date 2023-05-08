@@ -54,7 +54,7 @@ const Homepage = () => {
             </div>
             </div>
             <div style={{display: 'flex'}}>
-              <img className= "img_2"src="/static/IMG_0522_square.jpeg" alt="" />
+              <img className= "img_2"src="/static/IMG_2786.jpeg" alt="" />
             </div>
           </div>
           <div className="homepage-section">

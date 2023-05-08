@@ -44,7 +44,7 @@ const plants = ({plants, bannerData}) => {
                 </div>
                 <div className="row">
                   <div style={{textAlign:'right'}} className="col-8 col-md-6">
-                    3 x 8-packs:
+                    24 Cells:
                   </div>
                   <div className="col-4 col-md-6">
                   $24
@@ -52,7 +52,7 @@ const plants = ({plants, bannerData}) => {
                 </div>
                 <div className="row">
                   <div style={{textAlign:'right'}} className="col-8 col-md-6">
-                    6 x 8-packs:
+                    48 Cells:
                   </div>
                   <div className="col-4 col-md-6">
                   $45
@@ -73,7 +73,7 @@ const plants = ({plants, bannerData}) => {
                 </div>
                 <div className="row">
                   <div style={{textAlign:'right'}} className="col-8 col-md-6">
-                    3 x 8-packs:
+                    24 Cells:
                   </div>
                   <div className="col-4 col-md-6">
                   $20
@@ -81,7 +81,7 @@ const plants = ({plants, bannerData}) => {
                 </div>
                 <div className="row">
                   <div style={{textAlign:'right'}} className="col-8 col-md-6">
-                    6 x 8-packs:
+                    48 Cells:
                   </div>
                   <div className="col-4 col-md-6">
                   $35

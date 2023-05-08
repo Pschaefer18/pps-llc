@@ -3,7 +3,7 @@ const Banner = () => {
     <div className="banner maylike-products-wrapper">
           <div className="marquee">
             <div className="maylike-products-container track">
-            <div>Online ordering will be available soon *** First market: Farmington, Saturday, May 6      ***       Contact me for special orders/landscaping (contact info in footer)</div>
+            <div>Online ordering is available *** @ Farmington Farmers Market - Saturdays 9AM-2PM *** Contact me for special orders/landscaping (contact info in footer)</div>
             </div>
           </div>
       </div>  )

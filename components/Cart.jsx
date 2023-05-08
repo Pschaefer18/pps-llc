@@ -1,5 +1,5 @@
 import { useStateContext } from "../context/StateContext";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import toast from 'react-hot-toast'
@@ -10,7 +10,7 @@ import getStripe from "../LIB/getStripe";
 const Cart = () => {
   const { totalPrice, adjustedPrice, totalQuantities, cartItems, setShowCart, onRemove, incQty, decQty, toggleCartItemQty } = useStateContext();
   console.log(cartItems)
-  const cartRef = useRef()
+  const cartRef = useRef(null)
 
   const handleCartClose = () => {
     setShowCart(false)
@@ -20,13 +20,27 @@ const Cart = () => {
       }
     })
   }
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        handleCartClose()
+      }
+      console.log(cartRef.current.contains(event.target))
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [cartRef])
   return (
     <>
         <Head>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         </Head>
-                    <div className="cart-wrapper" ref={cartRef}>
-                        <div className="cart-container">
+                    <div className="cart-wrapper">
+                        <div className="cart-container" ref={cartRef}>
                             <div className="cart-heading">
                               <button 
                                 type="button"

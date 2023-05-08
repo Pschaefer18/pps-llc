@@ -12,7 +12,7 @@ const about = () => {
             <img src="/static/IMG_0458.jpeg"></img>
 
                 <p className="intro">
-                    Paul's Plant Starts is a backyard nursery offering native perennials and garden vegetables. My goal is to fill the increasing demand of gardeners with quality transplants at the best value I can offer. I don’t have an organic certification, however all my practices fit the organic requirements. The plants receive small doses of fish emulsion, but nothing more. I’m strongly in favor of starting gardens and would love to work with you to make it happen. See <a className="landscaping-link" style={{textDecoration: "none", color: "gray", fontWeight: "bold" }} href="/landscaping">Landscaping</a> for details.
+                    Paul's Plant Starts is a backyard nursery offering native perennials and garden vegetables. My goal is to fill the increasing demand of gardeners with quality transplants at the best value I can offer. I don’t have an organic certification, however all my practices fit the organic requirements. The plants receive small doses of fish emulsion and/or micronutrients. I’m strongly in favor of starting gardens and would love to work with you to make it happen. See <a className="landscaping-link" style={{textDecoration: "none", color: "#1c61fc", fontWeight: "bold" }} href="/landscaping">Landscaping</a> for details.
                 </p>
                 <h2>About Vegetable Gardening</h2>
                 <p>
