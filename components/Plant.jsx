@@ -13,7 +13,7 @@ const Plant = ({ plant: {image, name, variety, features, pricing_options, scient
                 <div className="plant-icons">
                 {features && features.map((img) => {
                         return (
-                            <img src={urlfor(img)} width="55px" height="55px"/>
+                            <img key={img._key} src={urlfor(img)} width="55px" height="55px"/>
                         )
                       })}
                 </div>

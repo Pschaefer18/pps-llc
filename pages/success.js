@@ -80,7 +80,7 @@ const success = () => {
           const updateInventory = async (item, option_to_check, option_to_update, multiplier) => {
             
               if (item.option == option_to_check) {
-                const itemRef = ref(db, `/Inventory/${item.slug.current}/${option_to_update}s`)
+                const itemRef = ref(db, `/Inventory/${item.slug.current}/${option_to_update}`)
                 const currentValueSnapShot = await get(itemRef, '/')
                 const currentValue = currentValueSnapShot.val()
                 await set(itemRef, currentValue - item.quantity * multiplier)

@@ -90,7 +90,7 @@ const plantPage = ({ plant, inventory }) => {
             <div className='plant-page-phone features'>
                 {features && features.map((img) => {
                   return (
-                      <img src={urlfor(img)} width="45px" height="45px"/>
+                      <img key={img._key} src={urlfor(img)} width="45px" height="45px"/>
                   )
                 })}
               </div>
@@ -101,6 +101,7 @@ const plantPage = ({ plant, inventory }) => {
                     return ((image.indexOf(img) == 0 ? 
                     <div className='carousel-item active'>
                       <img
+                      key={img._key}
                       src={urlfor(img)}
                       alt={name}
                       className="img-fluid rounded-start"
@@ -202,7 +203,7 @@ const plantPage = ({ plant, inventory }) => {
                   <div className=' plant-page-reg features'>
                       {features && features.map((img) => {
                         return (
-                            <img src={urlfor(img)} width="45px" height="45px"/>
+                            <img key={img._key} src={urlfor(img)} width="45px" height="45px"/>
                         )
                       })}
                   </div>
@@ -381,7 +382,7 @@ const plantPage = ({ plant, inventory }) => {
               </div>
             </div>
           </div>
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossOrigin="anonymous"></script>
         </body>
     </div>
   )
