@@ -95,7 +95,7 @@ const Homepage = () => {
             </div>
           </div>
           <div className="homepage-section">
-            <div className="homepage-text one">
+            <div className="homepage-text one hello?">
               <p style={{textAlign: 'center'}}>
                 Garden/Landscaping service: $20/hour
               </p>
