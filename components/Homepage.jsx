@@ -92,9 +92,6 @@ const Homepage = () => {
               </table>
             </div>
             </div>
-            <div className="flip-section-order-2">
-              <img src="/static/IMG_0455_square.jpeg" alt=""/>
-            </div>
           </div>
           <div className="homepage-section">
             <div className="homepage-text one">
