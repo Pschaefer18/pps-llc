@@ -23,7 +23,7 @@ const Homepage = () => {
             </div>
           </div>
           <div className="homepage-section">
-            <div>
+            <div className="one">
             <div className="product-examples">
               <table>
                 <tr>
@@ -53,12 +53,12 @@ const Homepage = () => {
               </table>
             </div>
             </div>
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex'}} className="two">
               <img className= "img_2"src="/static/IMG_2786.jpeg" alt="" />
             </div>
           </div>
           <div className="homepage-section">
-            <div className="flip-section-order-1">
+            <div className="one">
               <img src="/static/IMG_0455_square.jpeg" alt=""/>
             </div>
             <div>
@@ -97,7 +97,7 @@ const Homepage = () => {
             </div>
           </div>
           <div className="homepage-section">
-            <div className="homepage-text">
+            <div className="homepage-text one">
               <p style={{textAlign: 'center'}}>
                 Garden/Landscaping service: $20/hour
               </p>
@@ -106,7 +106,7 @@ const Homepage = () => {
               </p>
               <button><a style={{textDecoration: 'none', color: 'black'}} href="/landscaping"> see 'Landscaping' </a></button>
             </div>
-            <div>
+            <div className="two">
               <img src="/static/IMG_0618.jpeg"/>
             </div>
           </div>

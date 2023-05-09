@@ -310,6 +310,12 @@ body{
     width: 70vw;
     margin: 5% auto;
   }
+  .one {
+    order: 2;
+  }
+  .two {
+    order: 1;
+  }
   .homepage-text p {
     text-align: center;
     font-size: 150%;
