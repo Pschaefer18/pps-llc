@@ -27,6 +27,9 @@ const Homepage = () => {
             <div className="product-examples">
               <table>
                 <tr>
+                  something
+                </tr>
+                <tr>
                   <td></td>
                   <td><img src="https://i.imgur.com/xa7qIqP.jpg" alt="" /></td>
                   <td><img src="https://i.imgur.com/0PPOpuT.jpg" alt="" /></td>
