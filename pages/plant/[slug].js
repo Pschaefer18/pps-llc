@@ -11,25 +11,31 @@
     import { DateTime } from 'luxon'
 
     const plantPage = ({ plant, inventory }) => {
-      console.log(plant)
       const {image, name, variety, pricing_options, scientific_name, slug, features, description, details, category, availability_window} = plant
       const {incQty, decQty, qty, onAdd, resetQty, cartItems, setShowCart} = useStateContext();
       const [option, setOption] = useState(pricing_options[0].option)
       const [availability, setAvailability] = useState("")
+      const mapOptionName = (option) => {
+        const sanityOptionNames = ["Single", "Four pack", "Eight pack", "Six pack", "Twelve pack"]
+        const firebaseOptionNames = ["Singles", "Half packs", "Full packs", "Half packs", "Full packs"]
+        if (sanityOptionNames.indexOf(option) != -1) {
+          return firebaseOptionNames[sanityOptionNames.indexOf(option)]
+        }
+        return option
+      }
       useEffect(() => {
         resetQty()
       }, [])
-      const checkIventory = () => {
-        pricing_options.forEach(option => {
-          if (inventory[mapOptionName(option)] > 0) {
-            return true
+      const checkInventory = () => {
+        for (const option of pricing_options) {
+          if (inventory[mapOptionName(option.option)] > 0) {
+            return true;
           }
-        })
-        return false
+        }
+        return false;
       }
-
       useEffect(() => {
-        if (checkIventory()) {
+        if (checkInventory()) {
           if(DateTime.fromISO(availability_window[0]).ts - DateTime.now().ts > 0) {
             setAvailability("pre-order")
           } else {
@@ -38,19 +44,7 @@
         } else {
           setAvailability("out of stock")
         }
-        console.log()
       }, [availability_window])
-      const mapOptionName = (option) => {
-        const sanityOptionNames = ["Single", "Four pack", "Eight pack", "Six pack", "Twelve pack"]
-        const firebaseOptionNames = ["Singles", "Half packs", "Full packs", "Half packs", "Full packs"]
-        console.log(firebaseOptionNames[sanityOptionNames.indexOf(option)])
-        if (sanityOptionNames.indexOf(option) != -1) {
-          console.log(option)
-          return firebaseOptionNames[sanityOptionNames.indexOf(option)]
-        }
-        console.log(option)
-        return option
-      }
       const getPrice = (option) => {
         return pricing_options.find((opt) => opt.option == option).price
       }
@@ -80,8 +74,6 @@
       }, []);
       return (
         <div>
-          {console.log(pricing_options[0].option)}
-          {console.log(option)}
             <Head>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
             </Head>
@@ -417,7 +409,6 @@
 
         const plants = await client.fetch(plantsQuery);
         const plant = await client.fetch(query);
-        console.log(plant.slug.current)
         const inventoryRef = ref(db, `/Inventory/${plant.slug.current}`)
         const inventorySnapshot = await get(inventoryRef, '/');
         const inventory = inventorySnapshot.val();
