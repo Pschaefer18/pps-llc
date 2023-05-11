@@ -66,7 +66,7 @@ const Navbar = ({plants}) => {
       {/* {console.log(plants)} */}
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div style={{width: "100%"}}class="container-fluid">
-        <img onClick = {() => {navigate.push('./')}} className="logo" src='https://i.imgur.com/GZFz9ge.png' alt="" />
+        <img onClick = {() => {navigate.push('/')}} className="logo" src='https://i.imgur.com/GZFz9ge.png' alt="" />
         <div className="center-nav">
             <div className="flex-search-container">
                   <div className="searchbar" ref={searchRef}>
