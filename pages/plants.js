@@ -13,6 +13,17 @@ const plants = ({plants, bannerData}) => {
     setFilter(query.query)
   }, [query])
   const returnedPlants = plants?.filter(plant => plant.name.toLowerCase().includes(filter))
+  const sortCallBack = (a, b) => {
+    if (a.name > b.name) {
+      return 1
+    }
+    if (a.name < b.name) {
+      return -1
+    }
+    if (a.name == b.name) {
+      return 0
+    }
+  }
   return (
     <div style={{minHeight: '89vh'}}>
         <Head>
@@ -96,8 +107,8 @@ const plants = ({plants, bannerData}) => {
             <div style={{backgroundColor: filter == "vegetable" ? 'var(--filter-color-A)' : 'var(--filter-color-B)', color: filter == "vegetable" ? 'var(--filter-color-C)': 'var(--filter-color-D)'}} onClick={() => setFilter("vegetable")}>Vegetables</div>
           </div>
             <div id = "plants-grid" className="plants-grid row row-cols-1 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 g-4">
-                {(filter && filter != "native" && filter != "vegetable") && (<><h3>Your search for "{query.query}" returned {returnedPlants.length > 0 ? (returnedPlants.length) : ("no")} result{returnedPlants.length !== 1 && 's'}</h3> {returnedPlants.map((plant) => <Plant plant = {plant}/>)}</>)}
-                {filter ? (plants?.filter((plant) => plant.category == filter).map((plant) => <Plant plant = {plant}/>)) : (plants?.map((plant) => <Plant plant = {plant}/>))}
+                {(filter && filter != "native" && filter != "vegetable") && (<><h3>Your search for "{query.query}" returned {returnedPlants.length > 0 ? (returnedPlants.length) : ("no")} result{returnedPlants.length !== 1 && 's'}</h3> {returnedPlants.sort((a, b) => sortCallBack(a, b)).map((plant) => <Plant plant = {plant}/>)}</>)}
+                {filter ? (plants?.filter((plant) => plant.category == filter).sort((a, b) => sortCallBack(a, b)).map((plant) => <Plant plant = {plant}/>)) : (plants?.sort((a, b) => sortCallBack(a, b)).map((plant) => <Plant plant = {plant}/>))}
             </div>
         </div>
     </div>

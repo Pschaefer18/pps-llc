@@ -255,7 +255,7 @@
                               </h6>
                             </div>
                           </div>
-                          <div className="row">
+                          { pricing_options.length > 1 && <div className="row">
                             <div className="col-4">
                               <h6>
                                 Options:
@@ -270,7 +270,7 @@
                                   )
                                   )}
                             </div>
-                          </div>
+                          </div>}
                         <div class="row">
                           <div class="col-4">
                             <h6 >
